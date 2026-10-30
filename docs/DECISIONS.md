@@ -108,3 +108,6 @@ M1–M8 全部完成（2026-10-30；394 測試全綠）。後續：以正式來�
 | 2026-10-30 | 名額計算用 `idn.event_seats_taken()`（SECURITY DEFINER，只回人數，只授權 idn_app、idn_user_scoped） | A1 的 RLS 連線看不到別人的報名，又不能讓機關側角色碰到 idn |
 | 2026-10-30 | 活動參與率的分母是「有 App 帳號者」；確認後執行失敗時，帶 i18n key 的業務錯誤（名額已滿等）把白話原因放進 `result.message`，其他錯誤不外露 | 背景居民沒有帳號、不可能報名；民眾需要知道為什麼報名失敗 |
 | 2026-10-30 | 既有開發資料庫以 `scripts/seed_m8.py` 補上 M8 示範資料（可重跑、不重建）；新資料庫的 `make seed` 已內含 | 不清掉使用者在介面上已操作的資料 |
+| 2026-10-30 | 雲端示範部署到 Render：根目錄 multi-stage Dockerfile（node 建四個前端＋python 後端，取代 `backend/Dockerfile`）、`render.yaml` Blueprint（PostgreSQL 16＋Key Value＋Docker 網站，區域 singapore，免費方案）；`DATABASE_URL` 覆蓋 PG_*；容器啟動時 migrate、資料庫為空才背景 seed（600 人、8 週）、同容器背景跑 worker | 使用者以 Render 部署，第一次因根目錄沒有 Dockerfile 失敗；免費方案沒有 shell、pre-deploy 與背景 worker |
+| 2026-10-30 | `pyproject.toml` 補上 `anthropic`、`truststore`（原本只裝在本機 venv）；seed 結束時產生當天 A1 報告；正式環境（APP_ENV=prod）首頁導向民眾 App | 容器內呼叫 Claude 會缺套件；雲端新部署一打開就要有內容 |
+| 2026-10-30 | 事件流長度上限改為設定 `EVENT_STREAM_MAXLEN`（預設 20 萬則）；Render 設 2 萬則 | 免費 Key Value 容量很小且為 noeviction，滿了事件會寫不進去；消費者即時處理，2 萬則足夠 |
