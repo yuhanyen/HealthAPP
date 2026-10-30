@@ -40,13 +40,13 @@ Linux／macOS 用 `make <target>`（[Makefile](Makefile)）。PostgreSQL 與 Red
 
 根目錄的 [Dockerfile](Dockerfile) 會一次建好四個前端與 API；[render.yaml](render.yaml) 定義整套服務。
 
-1. Render Dashboard → **New → Blueprint** → 選 `yuhanyen/HealthAPP` → Apply。會建立 `healthapp-db`（PostgreSQL 16）、`healthapp-kv`（Key Value）、`healthapp`（Docker 網站）。DB 角色密碼與各項金鑰由 Render 自動產生。
+1. Render Dashboard → **New → Blueprint** → 選 `yuhanyen/HealthAPP` → Apply。會建立 `healthapp-db`（PostgreSQL 16）與 `healthapp`（Docker 網站，事件匯流用的 Redis 跑在容器內，不另建 Key Value）。不要把本機 `.env` 貼進 Render 的 Environment。DB 角色密碼與各項金鑰由 Render 自動產生。
 2. 建立時會問 `ANTHROPIC_API_KEY`：填入就用 Claude，留空則 A1–A4 走規則式。
 3. 第一次啟動會自動 migrate，並在背景載入示範資料（600 人、8 週，免費方案約需數分鐘）；網址開啟後首頁直接進民眾 App。
 
 啟動流程見 [deploy/start.sh](deploy/start.sh)：`SEED_ON_START`（資料庫沒有使用者才載入）、`SEED_POPULATION`、`SEED_WEEKS`、`RUN_WORKER`（在同一個容器背景跑排程）。
 資料庫帳號必須能建立角色（CREATEROLE）；已在本機以「非超級使用者、有 CREATEROLE 的資料庫擁有者」模擬 Render 跑過 migrate 與 seed。
-免費方案限制：資料庫 30 天後到期、閒置 15 分鐘休眠（休眠時 05:00／07:00 排程不會跑）、Key Value 不持久化。
+免費方案限制：資料庫 30 天後到期、閒置 15 分鐘休眠（休眠時 05:00／07:00 排程不會跑）、容器內 Redis 不持久化（重啟後事件流清空）。
 
 ## 示範帳號（密碼一律 `Demo2026!`，僅限開發環境）
 

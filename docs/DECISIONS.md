@@ -111,3 +111,4 @@ M1–M8 全部完成（2026-10-30；394 測試全綠）。後續：以正式來�
 | 2026-10-30 | 雲端示範部署到 Render：根目錄 multi-stage Dockerfile（node 建四個前端＋python 後端，取代 `backend/Dockerfile`）、`render.yaml` Blueprint（PostgreSQL 16＋Key Value＋Docker 網站，區域 singapore，免費方案）；`DATABASE_URL` 覆蓋 PG_*；容器啟動時 migrate、資料庫為空才背景 seed（600 人、8 週）、同容器背景跑 worker | 使用者以 Render 部署，第一次因根目錄沒有 Dockerfile 失敗；免費方案沒有 shell、pre-deploy 與背景 worker |
 | 2026-10-30 | `pyproject.toml` 補上 `anthropic`、`truststore`（原本只裝在本機 venv）；seed 結束時產生當天 A1 報告；正式環境（APP_ENV=prod）首頁導向民眾 App | 容器內呼叫 Claude 會缺套件；雲端新部署一打開就要有內容 |
 | 2026-10-30 | 事件流長度上限改為設定 `EVENT_STREAM_MAXLEN`（預設 20 萬則）；Render 設 2 萬則 | 免費 Key Value 容量很小且為 noeviction，滿了事件會寫不進去；消費者即時處理，2 萬則足夠 |
+| 2026-10-30 | Render 不建 Key Value：`REDIS_URL` 未設定時 `deploy/start.sh` 在容器內啟動 Redis（只綁 127.0.0.1、不寫磁碟、64 MB、noeviction）；缺 `DATABASE_URL` 或 `PG_HOST` 指向本機時啟動即停並印出原因 | 免費方案每個 workspace 只能有 1 個 Key Value，Blueprint 建不起來；免費 Key Value 本來就不持久化，放容器內沒有損失；手動建服務貼本機 `.env` 會連 127.0.0.1，原本只看得到一長串 traceback |
