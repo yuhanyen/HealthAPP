@@ -18,6 +18,11 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUTF8=1 \
     HEALTHAPP_ROOT=/srv
 
+# 沒有外部 Redis（REDIS_URL 未設定）時，start.sh 在容器內啟動這個 Redis 當事件匯流
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends redis-server \
+    && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /srv/backend
 COPY backend/pyproject.toml ./
 RUN pip install --no-cache-dir --upgrade pip \

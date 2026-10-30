@@ -1,8 +1,9 @@
 # Render Blueprint：Dashboard → New → Blueprint → 選這個 repo，一次建立：
-#   healthapp-db（PostgreSQL 16）、healthapp-kv（Key Value，事件匯流）、
-#   healthapp（Docker：API＋worker＋四個前端，第一次啟動自動 migrate 並載入示範資料）
+#   healthapp-db（PostgreSQL 16）、
+#   healthapp（Docker：API＋worker＋四個前端＋事件匯流用的 Redis，第一次啟動自動 migrate 並載入示範資料）
 # 唯一要手動填的是 ANTHROPIC_API_KEY（可留空：A1–A4 改用規則式）。
 # 免費方案限制：資料庫 30 天後到期、閒置 15 分鐘會休眠（休眠時排程不會跑）。
+# 不建 Render Key Value：免費方案每個 workspace 只能有 1 個；Redis 跑在容器內（見 deploy/start.sh）。
 
 databases:
   - name: healthapp-db
@@ -12,13 +13,6 @@ databases:
     postgresMajorVersion: "16"
 
 services:
-  - type: keyvalue
-    name: healthapp-kv
-    plan: free
-    region: singapore
-    maxmemoryPolicy: noeviction # 事件匯流用 Stream，不可被逐出
-    ipAllowList: [] # 只允許 Render 內網連線
-
   - type: web
     name: healthapp
     runtime: docker
@@ -32,14 +26,10 @@ services:
         fromDatabase:
           name: healthapp-db
           property: connectionString
-      - key: REDIS_URL
-        fromService:
-          type: keyvalue
-          name: healthapp-kv
-          property: connectionString
+      # 不設 REDIS_URL：start.sh 會在容器內啟動 Redis
       - key: EVENT_BUS
         value: redis
-      # 免費 Key Value 容量很小且設 noeviction（滿了會寫入失敗），事件流只留近 2 萬則
+      # 容器內 Redis 上限 64 MB 且不逐出（滿了會寫入失敗），事件流只留近 2 萬則
       - key: EVENT_STREAM_MAXLEN
         value: "20000"
       # 六個 DB 應用角色的密碼與各項金鑰：由 Render 產生，不需要人工設定
