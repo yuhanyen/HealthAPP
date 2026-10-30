@@ -642,6 +642,11 @@ def main(argv: list[str]) -> int:
         f"活動：{len(EVENTS)} 場已上架、{notices.written} 則公開公告待審、過去出席 {attended} 人次"
     )
     stats = run_deidentify(weeks=recent_weeks(today, args.weeks), today=today)
+    # 今天的每日報告先產生（不必等到 05:00 排程；雲端新部署一打開就有內容）
+    from app.agents import a1
+
+    reports = a1.run_daily_batch(today)
+    print(f"A1 今日報告：{reports.reports} 份")
 
     with session_scope(DbRole.MIGRATOR) as s:
         write_audit(

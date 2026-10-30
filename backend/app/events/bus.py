@@ -43,8 +43,6 @@ EVENT_CATALOG: dict[str, EventSpec] = {
 }
 
 IDENTIFYING_FIELDS = frozenset({"user_id", "name", "phone", "address", "national_id_hash"})
-# 事件匯流只保留近期訊息（約 20 萬則）；需要長期保存的是稽核與 DB，不是事件流
-STREAM_MAXLEN = 200_000
 
 
 class EventValidationError(ValueError):
@@ -91,7 +89,7 @@ class EventBus:
         msg_id = self.client.xadd(
             self.stream,
             {"type": event_type, "json": json.dumps(event, ensure_ascii=False)},
-            maxlen=STREAM_MAXLEN,
+            maxlen=get_settings().event_stream_maxlen,
             approximate=True,
         )
         log.info("event published %s %s", event_type, msg_id)

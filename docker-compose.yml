@@ -1,13 +1,13 @@
 # 健康大數據 App — 一期 PoC
-# 啟動：docker compose up -d db redis && make migrate && make seed && docker compose up -d api worker
-# web（四個前端 app）於 M4 加入。
+# 啟動：docker compose up -d db redis && docker compose run --rm migrate && make seed && docker compose up -d api worker
+# 映像（根目錄 Dockerfile）已含四個前端，API 掛在 /app/<名稱>/。
 
 name: healthapp
 
 x-backend: &backend
   build:
     context: .
-    dockerfile: backend/Dockerfile
+    dockerfile: Dockerfile
   env_file: .env
   environment:
     PG_HOST: db

@@ -6,7 +6,9 @@ import os
 from functools import lru_cache
 from pathlib import Path
 from typing import Literal
+from urllib.parse import unquote, urlsplit
 
+from pydantic import model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 PROJECT_ROOT = Path(os.environ.get("HEALTHAPP_ROOT", Path(__file__).resolve().parents[2]))
@@ -24,6 +26,9 @@ class Settings(BaseSettings):
     pg_db: str = "healthapp"
     pg_superuser: str = "postgres"
     pg_superpass: str = ""
+    # 雲端平台（例如 Render）給的連線字串；有設定時覆蓋上面五項。
+    # 這個帳號要能建立角色（CREATEROLE）：六個應用角色由 migration 0001 建立。
+    database_url: str = ""
 
     idn_app_password: str = ""
     idn_user_scoped_password: str = ""
@@ -35,6 +40,8 @@ class Settings(BaseSettings):
     redis_url: str = "redis://127.0.0.1:56379/0"
     event_bus: Literal["redis", "memory"] = "redis"
     event_stream: str = "events"
+    # 事件匯流只保留近期訊息；需要長期保存的是稽核與 DB，不是事件流
+    event_stream_maxlen: int = 200_000
 
     jwt_secret: str = ""
     jwt_ttl_minutes: int = 480
@@ -67,6 +74,19 @@ class Settings(BaseSettings):
     places_villages: str = ""  # JSON：{"place_id": "N01", ...}
     places_merchants: str = ""  # JSON：{"M01": "place_id", ...}（商家評分，SPEC §17.2）
     event_feeds: str = ""  # JSON 陣列：公開活動公告的 RSS／Atom 網址（須在來源白名單內）
+
+    @model_validator(mode="after")
+    def _from_database_url(self) -> Settings:
+        if self.database_url:
+            url = urlsplit(self.database_url)
+            if url.scheme not in ("postgres", "postgresql", "postgresql+psycopg"):
+                raise ValueError("DATABASE_URL 必須是 postgresql:// 連線字串")
+            self.pg_host = url.hostname or self.pg_host
+            self.pg_port = url.port or 5432
+            self.pg_db = url.path.lstrip("/") or self.pg_db
+            self.pg_superuser = unquote(url.username or self.pg_superuser)
+            self.pg_superpass = unquote(url.password or "")
+        return self
 
     @property
     def i18n_dir(self) -> Path:

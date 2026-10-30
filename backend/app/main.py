@@ -127,7 +127,8 @@ def create_app() -> FastAPI:
 
     @application.get("/", include_in_schema=False)
     def root() -> RedirectResponse:
-        return RedirectResponse("/docs" if get_settings().app_env == "prod" else "/console")
+        # 正式（雲端示範）環境：首頁直接進民眾 App；開發環境：M1 驗收台
+        return RedirectResponse("/app/citizen/" if get_settings().app_env == "prod" else "/console")
 
     return application
 
