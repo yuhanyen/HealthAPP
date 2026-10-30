@@ -1,0 +1,1177 @@
+{
+  "app": {
+    "name": "健康大數據 App",
+    "tagline": "健康資料中台 一期 PoC"
+  },
+  "consent": {
+    "source": {
+      "wearable": {
+        "name": "手機／穿戴裝置活動資料",
+        "data": "步數、心率、睡眠",
+        "purpose": "產生每日健康報告、運動處方，以及運動達標點數判定",
+        "impacts": [
+          "每日報告不再有步數與活動分析",
+          "運動達標點數無法自動發放"
+        ]
+      },
+      "site": {
+        "name": "社區據點量測資料",
+        "data": "血壓、身高體重、體脂、血糖",
+        "purpose": "把據點量測結果放進每日報告，並在數值連續偏高時提醒您複測",
+        "impacts": [
+          "每日報告不再有據點量測結果",
+          "量測數值連續偏高的提醒將停止"
+        ]
+      },
+      "nhi": {
+        "name": "健保署健康存摺就醫紀錄",
+        "data": "就醫紀錄、用藥、檢驗、疫苗、過敏",
+        "purpose": "讓運動處方避開不適合您的強度，並提醒回診與用藥",
+        "impacts": [
+          "每日報告與運動處方不再參考就醫與用藥紀錄",
+          "回診與用藥提醒將停止"
+        ]
+      },
+      "env": {
+        "name": "所在行政區（天氣與空品）",
+        "data": "您設定的行政區",
+        "purpose": "依您所在地區的天氣、熱指數與空品調整運動建議",
+        "impacts": [
+          "運動建議不再依您所在地區的天氣與空品調整"
+        ]
+      },
+      "merchant": {
+        "name": "特約商家點數兌換",
+        "data": "兌換紀錄（商家只看到兌換碼與優惠品項）",
+        "purpose": "讓您用運動點數在在地特約商家兌換優惠",
+        "impacts": [
+          "無法在特約商家兌換點數"
+        ]
+      }
+    },
+    "items": {
+      "steps": "步數",
+      "heart_rate": "心率",
+      "sleep": "睡眠",
+      "bp": "血壓",
+      "weight": "體重",
+      "height": "身高",
+      "body_fat": "體脂",
+      "glucose": "血糖",
+      "visits": "就醫紀錄",
+      "conditions": "診斷紀錄",
+      "medications": "用藥",
+      "labs": "檢驗",
+      "immunizations": "疫苗",
+      "allergies": "過敏",
+      "district": "所在行政區",
+      "redemptions": "兌換紀錄"
+    },
+    "who_sees": {
+      "self": "您本人：在 App 與您的數位分身（A1）中看到完整內容",
+      "family": "您授權的家屬：只看到「今日狀態一句話、風險等級、是否有待辦」，看不到任何數值或就醫明細",
+      "agency": "衛生局／衛生所：只看到去識別化後的群體統計，每一格至少 {k} 人，看不到您個人",
+      "merchant": "特約商家：看不到您的任何健康資料"
+    },
+    "revoke": {
+      "confirm": "確定要撤回嗎？撤回後您將失去：{impacts}",
+      "done": "已撤回。"
+    },
+    "error": {
+      "not_found": "找不到這筆授權",
+      "invalid_source": "不支援的資料來源：{source}",
+      "invalid_scope": "授權範圍不正確：{detail}",
+      "already_revoked": "這筆授權已經撤回"
+    }
+  },
+  "action": {
+    "summary": {
+      "booking": "預約據點量測時段",
+      "share": "分享健康摘要給家屬",
+      "redeem": "用點數兌換優惠",
+      "consent_revoke": "撤回授權",
+      "event_register": "報名社區活動"
+    },
+    "error": {
+      "not_found": "找不到這個待確認的動作",
+      "expired": "這個確認已超過 24 小時，已自動作廢，請重新操作",
+      "invalid_state": "這個動作已經處理過，不能重複確認",
+      "not_owner": "只有本人可以確認這個動作",
+      "unsupported": "不支援的動作類型：{action_type}"
+    }
+  },
+  "auth": {
+    "invalid_credentials": "帳號或密碼錯誤",
+    "rate_limited": "操作太頻繁了，請稍候一分鐘再試",
+    "unauthenticated": "請先登入",
+    "forbidden": "您沒有權限執行此操作"
+  },
+  "tool": {
+    "error": {
+      "unknown": "未知的工具：{tool}",
+      "not_allowed": "此 Agent 不可呼叫工具：{tool}",
+      "scope_missing": "工具呼叫必須附上授權範圍（consent_scope）",
+      "scope_rejected": "這項資料不在您目前的授權範圍內：{items}",
+      "scope_forged": "傳入的授權範圍超出本人實際授權：{items}",
+      "wrong_user": "只能存取本人的資料"
+    },
+    "confirmation_required": "這個動作需要您確認後才會執行",
+    "not_implemented": "此功能於二期提供，一期僅記錄呼叫"
+  },
+  "report": {
+    "title": "【今日健康】{date}",
+    "status": {
+      "L0": "今天狀態穩定，維持目前的活動量就很好。",
+      "L1": "最近活動量比之前少，今天試著多走一點。",
+      "L2": "血壓連續幾次偏高，建議這幾天到據點複測。",
+      "L3": "血壓連續偏高、近一個月沒有回診紀錄，建議盡快到據點複測或諮詢醫師。"
+    },
+    "steps": "步數 {value} 步（{compare}）　依據：手機步數 {date}",
+    "steps_compare_week": "比前一週平均{direction} {pct}%",
+    "steps_compare_peer": "同齡平均約 {peer} 步",
+    "more": "多",
+    "less": "少",
+    "bp": "血壓 {s}/{d}（{note}）　依據：{site} {date}",
+    "bp_note_high_streak": "最近 {n} 次都偏高",
+    "bp_note_high": "偏高，建議複測",
+    "bp_note_ok": "在建議範圍內",
+    "weight": "體重 {value} 公斤　依據：{site} {date}",
+    "no_data": "昨天沒有收到這項資料",
+    "voice_intro": "早安，這是您今天的健康提醒。"
+  },
+  "rx": {
+    "intensity": {
+      "low": "輕度",
+      "moderate": "中等強度"
+    },
+    "venue": {
+      "indoor": "室內（家中或活動中心）",
+      "outdoor": "戶外（社區步道或公園）"
+    },
+    "example": {
+      "indoor": "伸展操、原地踏步",
+      "outdoor": "快走、散步"
+    },
+    "plan": "今天建議在{venue}做{intensity}活動 {minutes} 分鐘，例如{example}。",
+    "reason": {
+      "aqi": "空氣品質 AQI {aqi}，建議改在室內",
+      "heat": "熱指數 {heat}°C，建議改在室內",
+      "rain": "外面下雨，建議改在室內",
+      "conservative": "依就醫紀錄採保守版本"
+    },
+    "contra": {
+      "conservative": [
+        "運動前後量血壓，偏高時改做伸展就好",
+        "避免憋氣用力與重量訓練",
+        "運動中頭暈、胸悶或喘不過氣，請立即停止休息"
+      ],
+      "standard": [
+        "運動前先暖身 5 分鐘",
+        "補充水分，量力而為"
+      ]
+    }
+  },
+  "booking": {
+    "summary": "預約 {site}，{when}（{purpose}）",
+    "error": {
+      "site_not_found": "找不到這個據點",
+      "not_a_slot": "這不是可預約的時段",
+      "slot_full": "這個時段已經額滿"
+    }
+  },
+  "points": {
+    "summary": "用 {points} 點兌換「{offer}」",
+    "reason": {
+      "goal": {
+        "steps": "步數達標"
+      },
+      "redeem": "兌換優惠",
+      "other": "點數異動",
+      "event": {
+        "attend": "參加社區活動"
+      }
+    },
+    "error": {
+      "insufficient": "點數不足",
+      "offer_not_found": "找不到這個優惠",
+      "offer_unavailable": "這個優惠目前無法兌換",
+      "review_not_found": "找不到這筆待審紀錄",
+      "review_done": "這筆紀錄已經審核過了"
+    }
+  },
+  "visit_guide": {
+    "revisit_reminder": [
+      "說明來意：據點想關心您最近的狀況",
+      "邀請到據點量血壓，並協助預約方便的時段",
+      "詢問是否需要家人陪同或交通協助"
+    ],
+    "phone_followup": [
+      "電話問候，確認近況與作息",
+      "邀請參加據點的健康活動",
+      "如有需要，轉知據點人員安排後續"
+    ],
+    "home_visit": [
+      "到府問候，留意居家環境與行動安全",
+      "了解生活起居是否需要協助",
+      "需要時協助轉介相關資源"
+    ]
+  },
+  "site": {
+    "error": {
+      "not_your_site": "只能上傳到您所屬的據點",
+      "bad_qr": "QR 碼無效或已過期，請民眾重新出示",
+      "no_items": "沒有任何量測項目",
+      "no_consent": "這位民眾尚未授權據點量測資料，量測結果不會儲存",
+      "bad_reason": "原因分類不正確",
+      "task_ref_required": "回報必須附上任務編號",
+      "task_not_found": "找不到這個關懷任務，或它不屬於本據點"
+    },
+    "board": {
+      "equipment_stub": "設備與耗材管理於二期提供"
+    },
+    "report_saved": "已回報。訪視原因去除姓名後，每天彙整成群體統計（人數少於 k 不公開）。",
+    "audit": {
+      "referral_human": "志工回報需要轉介：由據點人員判斷，系統不自行轉介"
+    }
+  },
+  "merchant": {
+    "error": {
+      "auth": "商家驗證失敗",
+      "dates": "結束日不能早於開始日",
+      "not_yours": "這不是本店的優惠或兌換券",
+      "coupon_not_found": "找不到這張兌換券",
+      "coupon_used": "這張兌換券已經核銷過了",
+      "coupon_expired": "這張兌換券已過期（兌換後 30 天內有效）"
+    },
+    "report_note": "本報告只有聚合數字，沒有任何兌換者個人資料；年齡層人數少於 {k} 的格子不顯示。"
+  },
+  "decode": {
+    "error": {
+      "task_ref_required": "解碼必須附上任務編號",
+      "not_found": "找不到這個關懷代號",
+      "out_of_site": "這個代號不屬於本據點，請回報公衛端重新分配"
+    }
+  },
+  "kanon": {
+    "masked": "已遮蔽（< k）",
+    "error": {
+      "aggregate_without_n": "聚合查詢必須輸出人數欄位 n，才能套用 k-匿名遮蔽"
+    }
+  },
+  "artifact": {
+    "error": {
+      "not_found": "找不到這個分析產物"
+    }
+  },
+  "agent": {
+    "refusal": "這個問題我沒辦法回答，建議諮詢醫師或到社區據點詢問。",
+    "too_many_steps": "這個問題需要比較多步驟，我先停在這裡，請再說得具體一點。",
+    "unavailable": "小幫手暫時無法回應，請稍後再試。",
+    "error": {
+      "bad_args": "工具參數不正確：{detail}",
+      "tool_failed": "工具執行失敗，請稍後再試"
+    }
+  },
+  "a1": {
+    "yes": "是",
+    "no": "否",
+    "weekday": [
+      "一",
+      "二",
+      "三",
+      "四",
+      "五",
+      "六",
+      "日"
+    ],
+    "context": "## 執行期情境（由系統注入）\n- 今天：{today}（台灣時間）\n- 你服務的這位民眾：年齡層 {age_band}，長者模式：{elder}\n- 目前授權範圍（工具呼叫時由系統自動帶入 user_id 與 consent_scope，你不需要也無法修改）：{scope}\n- 最新數位雙生快照：{twin}\n- 預約、兌換、撤回授權、分享：呼叫工具後畫面會出現確認卡片，本人按下「確認」才會執行。你只要請本人按確認，不可以說已經完成。\n- 撤回授權時只轉述系統給的確認文字，不加任何其他說法。\n- 用繁體中文、口語、簡短回答；長者模式再更短。每個建議都要附「依據：…」。\n- 需要查資料時，先用一句話告訴本人你要幫他看什麼（例如「我看一下你最近的步數和血壓。」），再呼叫工具；雙生快照已有的數字不必再查。",
+    "twin": {
+      "last_dialog": "{date} 與 A1 對話過"
+    },
+    "report": {
+      "status": "狀態一句話：{text}",
+      "projection": "若今天走到 {goal} 步，近 7 日平均可從 {current} 步提高到 {projected} 步",
+      "basis_env": "今日空品 AQI {aqi}、熱指數 {heat}°C",
+      "basis_steps": "近兩週步數",
+      "points_granted": "，昨天達標 +{points} 點",
+      "points_expiring": "；{points} 點將在 {date} 到期",
+      "points_merchants": "，附近可兌換：{merchants}",
+      "line": {
+        "metric": "▸ 關鍵指標：{text}",
+        "recommendation": "▸ 今日建議：{plan}　依據：{basis}",
+        "projection": "▸ 小目標：{text}　依據：近 7 日步數",
+        "decision_booking": "▸ 待你決定：{when} {site}可以複測，要預約嗎？",
+        "points": "▸ 點數：目前 {balance} 點",
+        "event": "▸ 這週附近：{title}（{when}，{venue}）{reason}"
+      }
+    },
+    "alert": {
+      "title": "血壓連續偏高提醒",
+      "body": "最近 {n} 次據點血壓都偏高，建議這幾天到據點複測。",
+      "slot": "{when} {site}有空的時段，打開 App 就能預約。"
+    },
+    "chat": {
+      "help": "我是你的健康小幫手。你可以跟我說：「我最近狀況怎麼樣？」「這個月的健康統計」「附近有什麼活動？」「推薦附近的早餐店」「今天適合什麼運動？」「幫我預約量血壓」「我有多少點數？」「我的授權有哪些？」",
+      "decline": "好的，先不用。有需要隨時跟我說。",
+      "propose_booking": "我可以幫你預約{site}複測：{options}。要哪一個？（回「不用」也可以）",
+      "no_slots": "{site}最近兩天的時段都滿了，我明天再幫你看看。",
+      "confirm_card": "好，我準備好了：{summary}。請按下方的「確認」，才會正式送出。",
+      "points": "你目前有 {balance} 點。",
+      "points_expiring": "其中 {points} 點會在 {date} 到期，記得使用。",
+      "no_offers": "你目前有 {balance} 點，附近還沒有點數夠兌換的優惠，再累積一下就可以了。",
+      "offer": "{merchant}「{title}」{cost} 點",
+      "propose_redeem": "你有 {balance} 點，我可以幫你兌換：{options}。要哪一個？（回「不用」也可以）",
+      "exercise": "{plan}今天的步數目標是 {goal} 步。　依據：{basis}",
+      "contra": "注意：{items}",
+      "consent": "你目前授權給 App 的資料：{sources}。想知道某一項會讓誰看到什麼，或要撤回，跟我說一聲就好。",
+      "consent_none": "你目前沒有授權任何資料給 App。",
+      "revoke_which": "\n要撤回哪一項呢？",
+      "tool_error": "這件事我沒辦法完成：{reason}",
+      "events_intro": "這兩週附近有這些活動：",
+      "event_option": "{n}. {title}｜{when}｜{venue}（{reason}）",
+      "propose_event": "要幫你報名哪一個？（回「第一個」或「不用」）",
+      "no_events": "這兩週附近還沒有新的活動，有消息我再告訴你。",
+      "basis": "依據：{items}",
+      "dining_intro": "依你的偏好，評分 {min} 以上的店家：",
+      "dining_option": "・{name}（{category}，{rating} 分）{reason}",
+      "no_dining": "附近評分 {min} 以上的店家目前沒有符合的，要不要放寬距離或門檻？",
+      "stats_intro": "{title}：",
+      "stats_empty": "這段期間還沒有收到你的量測資料。"
+    }
+  },
+  "metric": {
+    "steps_avg": "每日步數平均",
+    "steps_goal_rate": "步數達標率",
+    "bp_uncontrolled_rate": "高血壓未控制率",
+    "bp_high_rate": "血壓偏高比例",
+    "measure_freq": "量測頻率",
+    "site_usage": "據點使用率",
+    "redeem_rate": "點數兌換率",
+    "event_attend_rate": "活動參與率"
+  },
+  "kpi": {
+    "app": {
+      "dau": "每日活躍使用者",
+      "mau": "月活躍使用者",
+      "retention_7": "7 日留存率",
+      "retention_30": "30 日留存率",
+      "push_open_rate": "推播開啟率",
+      "elder_mode_rate": "長者模式使用率"
+    },
+    "status": {
+      "met": "達標",
+      "missed": "未達標",
+      "watch": "達標但需關注",
+      "unknown": "無資料"
+    },
+    "report_title": {
+      "week": "計畫 KPI 週報",
+      "month": "計畫 KPI 月報"
+    },
+    "section": {
+      "health": "健康促進指標（全區）",
+      "app": "App 使用指標",
+      "notes": "資料說明"
+    },
+    "line": "**{label}**：本期 {current}（上期 {previous}；目標 {target}）— {status}",
+    "app_empty": "App 使用指標尚未達發布門檻（月活躍人數需 ≥ {k}）",
+    "notes": "- 全部為去識別化群體統計，每格至少 {k} 人；被遮蔽的格子不揭露、不推估\n- 本期以完整週計算，本週尚未結束不納入\n- 目標值為示範值，可於系統設定 kpi_targets 調整"
+  },
+  "a3": {
+    "context": "## 執行期情境（由系統注入）\n委派任務（SPEC §8.3）：{task}\n請依 SKILL 標準流程分析。最後一則回覆只輸出一個 ```json 區塊，欄位：findings（每項 claim、evidence、confidence）、queries（Q-xxxx 清單）、charts、report、data_cutoff、k、masked_rows。沒有查詢編號的結論不得列入。",
+    "series_all": "全區",
+    "all_villages": "全部里",
+    "chart_title": "圖 {n}　{metric}（近 {weeks} 週）",
+    "report_title": "分析報告：{question}",
+    "direction": {
+      "up": "上升",
+      "down": "下降",
+      "stable": "持平"
+    },
+    "finding": {
+      "rising": "{village} 的{metric}近 4 週平均 {recent}，高於之前的 {earlier}",
+      "district": "全區{metric}近 4 週平均 {recent}（之前 {earlier}），{direction}",
+      "secondary": "{village} 的{metric}近 4 週平均 {recent}（之前 {earlier}），{direction}",
+      "correlation": "{a}與{b}的相關係數 r = {r}（{n} 個里×週配對；相關不等於因果）"
+    },
+    "section": {
+      "spec": "問題規格",
+      "cleaning": "資料清理",
+      "findings": "發現",
+      "explain": "可能解釋（非資料直接顯示）",
+      "limits": "限制"
+    },
+    "spec_body": "- 對象：{villages}\n- 指標：{metrics}\n- 期間：近 {weeks} 個完整週（資料截止 {cutoff}）\n- k = {k}",
+    "cleaning_body": "- 被 k-匿名遮蔽的列：{masked}（不補值、不推估）\n- 本週尚未結束，不納入\n- {notes}",
+    "explain_body": "- 未控制率的分子依賴量測：量測次數減少時，數字可能失真（不一定代表控制變差）\n- 據點使用率與量測頻率同時下降時，可能是量測可近性改變",
+    "limits_body": "- 以週聚合，無法呈現個人變化\n- 相關分析只描述同步程度，不代表因果\n- 各里人數不同，小里的比例波動較大"
+  },
+  "a4": {
+    "context": "## 執行期情境（由系統注入）\n委派任務（SPEC §8.3）：{task}\n請依 SKILL「A2 委派查詢」流程。最後一則回覆只輸出一個 ```json 區塊，欄位：timeline（每項 date、event、source_class、source_url、village_code、topic、sentiment）、topics、trend_summary。沒有來源連結的事件不得列入。",
+    "trend_summary": "近 {days} 天共 {n} 則，負面 {neg}%；突增：{rising}",
+    "none": "無",
+    "disease_note": "含疫病相關內容：非確診統計，需衛生單位確認。"
+  },
+  "a2": {
+    "context": "## 執行期情境（由系統注入）\n- 今天：{today}；k = {k}\n- 轄區里代碼：{villages}\n- 群體指標：steps_avg、steps_goal_rate、bp_uncontrolled_rate、bp_high_rate、measure_freq、site_usage、redeem_rate\n- 數字一律委派 delegate_a3，外部事件一律委派 delegate_a4；status 不是 accepted 的結果不得採用。\n- 依 SKILL 的輸出格式回覆，最後一行固定「以上為分析建議，需承辦核定後執行。」",
+    "district": "北區全區",
+    "candidate": "{village}臨時巡迴量測點（候選）",
+    "chat": {
+      "help": "我可以協助：\n・分析：「北區高血壓未控制率為什麼上升？」\n・談參：「議會要質詢據點關閉，幫我準備談參」\n・資源配置：「要在哪裡加開巡迴量測點？」\n所有結論都附查詢編號或來源，需承辦核定後執行。",
+      "individual": "這屬於個人層級，機關側無法查詢；若是關懷需求，請走關懷清單流程（每日 05:30 產生代號，由據點人員以任務編號解碼）。",
+      "care": "關懷代號清單每天 05:30 依規則產生（只有代號、任務類型、規則編號，沒有任何健康數據），已送到各據點的工作板；儀表板「關懷清單」可看各類數量。"
+    },
+    "section": {
+      "question": "【問題】{target} × {metric} × 近 {weeks} 週 × 要不要介入",
+      "observation": "【觀察】",
+      "events": "【外部事件】",
+      "cause": "【可能原因】",
+      "suggestion": "【建議】",
+      "uncertain": "【不確定之處】"
+    },
+    "source": {
+      "news": "地方新聞",
+      "forum": "論壇",
+      "google_places": "商家評論",
+      "community": "社區公告",
+      "unknown": "其他來源"
+    },
+    "cause": {
+      "access": "{villages} 未控制率上升，與量測頻率／據點使用率下降同步，且同期有 {n} 則據點關閉、時段不足的在地訊息——可能是量測可近性下降，而非控制變差（信心：中）。",
+      "no_events": "{villages} 數字有變化，但外部訊號未見相關事件；原因需人工了解（信心：低）。",
+      "mismatch": "輿情與數據不一致：外部有據點相關抱怨，但數字未見明顯變化；如實呈現，需人工了解。",
+      "unclear": "目前資料不足以判斷原因。"
+    },
+    "suggest": {
+      "access": "在 {villages} 設臨時巡迴量測點或延長衛生所量測時段，直到據點復業；四週後追蹤量測頻率與未控制率是否回升。",
+      "investigate": "請衛生所了解 {villages} 近期的量測與回診情形，下個月再比較一次。",
+      "monitor": "持續監測，下次月報再比較。"
+    },
+    "uncertain": "資料截止 {cutoff}；k = {k}，被遮蔽 {masked} 列不補值。未控制率分子依賴量測，量測減少可能使數字失真；相關不等於因果。",
+    "no_data": "・目前沒有可採用的數據結果。",
+    "no_events": "・同期沒有找到附來源的相關事件。",
+    "rejected": "※ {agent} 的結果未附足證據，未採用：{problems}",
+    "approval": "以上為分析建議，需承辦核定後執行。",
+    "briefing_draft": "本談參為草稿，發言內容由主管定稿。",
+    "briefing_prompt": "{occasion}要用的談參：{topic}",
+    "resource": "以 0.8 公里步行範圍估算，人口覆蓋率由 {before}% 提高到 {after}%；新涵蓋：{villages}。",
+    "assumptions": "假設與範圍：{items}",
+    "alert": {
+      "question_a3": "{village} 近 8 週據點使用率、量測頻率、未控制率",
+      "question_a4": "{village} 同期有無據點停辦、設備故障、交通變動（{topic}）",
+      "consistent": "{village}「{topic}」輿情突增，與數據吻合：同期據點使用率／量測頻率下降。",
+      "inconsistent": "{village}「{topic}」輿情突增，但數據未見同步變化：輿情與數據不一致，需人工了解。",
+      "manual": "不自行下結論；建議承辦先向據點或里辦公處了解狀況。"
+    }
+  },
+  "family": {
+    "no_report": "今天的狀態還沒更新。",
+    "not_allowed": "您不在這位家人的守護圈內，或授權已收回",
+    "bad_code": "守護碼無效或已過期，請家人重新產生",
+    "self": "不能把自己加入守護圈",
+    "summary": "把每日狀態摘要分享給 {viewer}（只有狀態一句話、風險等級、是否有待辦，沒有任何數值）",
+    "pending": {
+      "booking": "有一筆據點預約等本人確認",
+      "redeem": "有一筆點數兌換等本人確認",
+      "share": "有一筆分享設定等本人確認",
+      "consent_revoke": "有一筆授權設定等本人確認",
+      "decision_booking": "建議到據點複測，尚未預約"
+    },
+    "risk": {
+      "L0": "穩定",
+      "L1": "留意",
+      "L2": "建議複測",
+      "L3": "建議盡快複測或諮詢醫師"
+    }
+  },
+  "me": {
+    "error": {
+      "no_report": "這一天的報告還沒產生",
+      "not_found": "找不到這筆資料"
+    }
+  },
+  "agency_ui": {
+    "title": "北區公衛儀表板",
+    "login_title": "公衛儀表板登入",
+    "login_demo": "示範帳號：agency.north（衛生所）、agency.bureau（衛生局），密碼 Demo2026!",
+    "not_agency": "這個帳號不是機關帳號",
+    "logout": "登出",
+    "nav": {
+      "dashboard": "總覽",
+      "chat": "問 A2",
+      "briefing": "談參",
+      "alerts": "輿情警訊",
+      "events": "活動"
+    },
+    "kpi_title": "本週 KPI（全區，最近完整週 vs 前一週）",
+    "kpi_report": "產生 KPI 月報（含目標與達成狀態）",
+    "direction": {
+      "better": "改善",
+      "worse": "惡化",
+      "stable": "持平"
+    },
+    "metric_select": "地圖與趨勢指標",
+    "map_title": "熱區（最近完整週，各里）",
+    "map_masked": "已遮蔽（< k）",
+    "map_popup": "{name}：{value}（{n} 人）",
+    "map_popup_masked": "{name}：{masked}",
+    "legend_low": "較低",
+    "legend_high": "較高",
+    "map_note": "里界為示意；底圖 © OpenStreetMap 貢獻者。每格至少 {k} 人，被遮蔽的格子不揭露、不推估。",
+    "trend_title": "趨勢（近 {weeks} 週）",
+    "all": "全區",
+    "alerts_title": "輿情警訊",
+    "alerts_none": "目前沒有警訊",
+    "alert_line": "{village}｜{topic}｜{count} 則（基線 {baseline}／週，{ratio} 倍）",
+    "alert_status": {
+      "open": "待對照",
+      "analyzed": "A2 已對照"
+    },
+    "analyze": "請 A2 對照數據",
+    "analysis": "A2 對照結果",
+    "care_title": "今日關懷清單（數量；n ≥ k 才公開）",
+    "care_none": "今日沒有可公開的數量",
+    "care_row": "{site}｜{task}：{n} 筆",
+    "task_type": {
+      "revisit_reminder": "回診提醒",
+      "phone_followup": "電話關懷",
+      "home_visit": "到府關懷",
+      "ALL": "全部"
+    },
+    "chat_title": "問 A2 公衛 Agent",
+    "chat_placeholder": "例如：北區高血壓未控制率為什麼上升？",
+    "chat_examples": [
+      "北區高血壓未控制率為什麼上升？",
+      "光明里最近據點使用率怎麼了？",
+      "要在哪裡加開巡迴量測點？"
+    ],
+    "send": "送出",
+    "working": "A2 正在委派 A3／A4 分析…",
+    "tool": {
+      "delegate_a3": "委派 A3 數據分析（SQL＋Python）",
+      "delegate_a4": "委派 A4 社區輿情（附來源）",
+      "cohort_analysis": "查群體指標與熱區",
+      "resource_sim": "模擬據點覆蓋率",
+      "briefing_pack": "整理談參",
+      "care_rules": "執行關懷規則"
+    },
+    "open_report": "開啟 A3 完整報告（含 SQL 與 Python）",
+    "briefing_title": "談參產生",
+    "occasion": "場合",
+    "occasions": [
+      "議會",
+      "記者會",
+      "里民大會",
+      "跨局處會議",
+      "商家說明會",
+      "業務會議"
+    ],
+    "topic": "議題",
+    "topic_placeholder": "例如：北區健康站關閉影響長輩量測",
+    "generate": "產生談參",
+    "copy": "複製",
+    "copied": "已複製",
+    "masked_note": "本頁所有數字皆為去識別化群體統計；k = {k}，遮蔽 {masked} 格。",
+    "events": {
+      "pending_title": "待審公開公告（{n} 則）",
+      "pending_intro": "從白名單內的公開公告自動擷取，已去除電話、Email 與帳號。請核對日期、時間、地點後再上架，上架後才會推薦給民眾。",
+      "pending_none": "目前沒有待審的公告",
+      "extracted": {
+        "claude": "Claude 擷取",
+        "rules": "規則擷取"
+      },
+      "source": "來源：",
+      "approve": "核對無誤，上架",
+      "reject": "不上架",
+      "approved": "已上架「{title}」",
+      "rejected": "已退回「{title}」",
+      "published_title": "近期已上架的活動",
+      "create": "新增活動",
+      "publish": "上架",
+      "published": "已上架「{title}」",
+      "cancel": "取消活動",
+      "cancelled": "已取消「{title}」，並通知 {n} 位報名者",
+      "col": {
+        "when": "時間",
+        "title": "活動",
+        "venue": "地點",
+        "points": "點數",
+        "registered": "報名數"
+      },
+      "count_note": "報名數少於 k 時只顯示「少於 k 人」；報名名單只有主辦據點看得到。"
+    }
+  },
+  "merchant_ui": {
+    "title": "特約商家",
+    "login_title": "特約商家登入",
+    "login_demo": "示範帳號：merchant.m01 … merchant.m18，密碼 Demo2026!",
+    "not_merchant": "這個帳號不是商家帳號",
+    "logout": "登出",
+    "nav": {
+      "verify": "核銷",
+      "offers": "優惠",
+      "report": "月成效"
+    },
+    "verify_title": "掃碼核銷",
+    "verify_hint": "請民眾打開 App「點數 → 我的兌換券」出示 QR，掃描或貼上兌換碼。你只會看到兌換品項與點數，看不到民眾的任何資料。",
+    "token": "兌換碼",
+    "scan": "用相機掃描",
+    "scan_unsupported": "這台裝置不支援相機掃描，請貼上兌換碼",
+    "verify_submit": "核銷",
+    "verified": "核銷成功：{offer}（{points} 點）",
+    "offers_title": "我的優惠",
+    "offer_id": "優惠編號",
+    "offer_title": "品項",
+    "cost": "所需點數",
+    "stock": "庫存",
+    "valid_from": "開始日",
+    "valid_to": "結束日",
+    "save": "上架／更新",
+    "saved": "已儲存",
+    "offer_line": "{title}｜{cost} 點｜庫存 {stock}｜{from}～{to}",
+    "report_title": "月成效報告",
+    "month": "月份",
+    "redemptions": "兌換筆數",
+    "points": "兌換點數",
+    "verified_n": "已核銷",
+    "outstanding": "尚未核銷",
+    "category_median": "同類商家中位數（{n} 家，週聚合）",
+    "by_offer": "品項",
+    "offer_row": "{title}：{count} 筆（{points} 點）",
+    "age_bands": "兌換者年齡層",
+    "masked": "已遮蔽（< k）",
+    "age_row": "{band}：{n} 人",
+    "none": "這個月還沒有資料"
+  },
+  "site_ui": {
+    "title": "據點工作台",
+    "login_title": "據點人員登入",
+    "login_demo": "示範帳號：site.s01 … site.s06（各據點承辦），密碼 Demo2026!",
+    "not_staff": "這個帳號不是據點人員帳號",
+    "logout": "登出",
+    "nav": {
+      "today": "今日",
+      "measure": "代量測",
+      "care": "關懷任務",
+      "events": "活動"
+    },
+    "board_title": "{site} 今日工作板 {date}",
+    "bookings": "今日預約 {n} 位",
+    "no_bookings": "今天沒有預約",
+    "slot": "{time}　{n} 位",
+    "care_summary": "關懷任務：共 {total} 筆，待訪 {open}，已訪 {visited}",
+    "measure_title": "掃民眾 QR 代量測",
+    "qr_label": "民眾 QR 內容",
+    "qr_hint": "請民眾打開 App「更多 → 我的量測 QR」，掃描或貼上內容（10 分鐘內有效）",
+    "scan": "用相機掃描",
+    "scan_unsupported": "這台裝置不支援相機掃描，請貼上 QR 內容",
+    "bp_sys": "收縮壓",
+    "bp_dia": "舒張壓",
+    "weight": "體重（公斤）",
+    "glucose": "血糖",
+    "submit_measure": "上傳量測",
+    "measured": "已上傳 {person} 的量測（{n} 項）",
+    "care_title": "關懷代號清單",
+    "care_intro": "清單只有代號與任務類型。解碼必須輸入任務編號，每次解碼都會留下紀錄；任務單不含任何健康資料。",
+    "care_none": "目前沒有關懷任務",
+    "decoded": "已解碼",
+    "task_ref": "任務編號",
+    "task_ref_hint": "例如 T-1030-01（必填，寫入稽核）",
+    "decode": "解碼",
+    "sheet_title": "任務單 {code}｜{task}",
+    "sheet_person": "對象：{name}　電話：{phone}",
+    "sheet_address": "地址：{address}",
+    "sheet_guide": "訪綱",
+    "sheet_note": "（本任務單不含任何健康資料）",
+    "report_title": "訪視回報",
+    "reason": "原因分類",
+    "reasons": {
+      "distance": "距離太遠",
+      "equipment": "設備問題",
+      "willingness": "意願",
+      "health": "健康因素",
+      "other": "其他"
+    },
+    "needs": "需要協助（可複選）",
+    "needs_options": [
+      "替代量測點",
+      "交通接送",
+      "家人陪同",
+      "教用 App",
+      "其他資源轉介"
+    ],
+    "referral": "需要轉介（由據點人員判斷，系統不自行轉介）",
+    "next_followup": "下次追蹤日",
+    "note": "備註",
+    "submit_report": "送出回報",
+    "status": {
+      "open": "待訪",
+      "assigned": "已派工",
+      "visited": "已訪視",
+      "closed": "結案"
+    },
+    "events": {
+      "title": "本據點活動",
+      "create": "新增活動",
+      "publish": "上架",
+      "published": "已上架「{title}」",
+      "none": "本據點近期沒有活動",
+      "counts": "報名 {registered} 人・已報到 {attended} 人・名額 {capacity}",
+      "open": "報到與名單",
+      "qr": "民眾 QR 內容",
+      "qr_hint": "請民眾打開 App「更多 → 我的量測 QR」；沒報名的現場參加者也可以直接報到",
+      "checkin": "報到",
+      "list": "報名名單（{n} 人）",
+      "list_note": "姓名已遮罩；每次查看名單都會留下紀錄。"
+    }
+  },
+  "citizen": {
+    "title": "健康小幫手",
+    "nav": {
+      "today": "今日",
+      "chat": "小幫手",
+      "points": "點數",
+      "family": "守護圈",
+      "more": "更多",
+      "health": "數據",
+      "events": "活動"
+    },
+    "login": {
+      "title": "登入健康小幫手",
+      "username": "帳號",
+      "password": "密碼",
+      "submit": "登入",
+      "demo": "示範帳號：wang.xiuying（王秀英）、wang.yijun（王怡君），密碼都是 Demo2026!",
+      "not_citizen": "這個帳號不是民眾帳號，請改用對應的工作端登入"
+    },
+    "common": {
+      "loading": "載入中…",
+      "retry": "再試一次",
+      "confirm": "確認",
+      "cancel": "取消",
+      "close": "關閉",
+      "back": "返回",
+      "error": "發生錯誤：{reason}",
+      "offline": "連不上伺服器，請稍後再試",
+      "expired": "登入已逾時，請重新登入"
+    },
+    "today": {
+      "title": "今日健康",
+      "no_report": "今天的報告還沒產生（每天早上 5 點更新，7 點推送）。",
+      "listen": "唸給我聽",
+      "stop": "停止",
+      "decision": "待你決定",
+      "book_slot": "預約 {when}",
+      "booked": "已預約：{site} {when}",
+      "upcoming": "接下來的預約",
+      "history": "最近幾天",
+      "ask": "有問題？問小幫手",
+      "risk": {
+        "L0": "狀態穩定",
+        "L1": "留意活動量",
+        "L2": "建議複測",
+        "L3": "建議盡快複測"
+      },
+      "confirm_booking": "確認預約",
+      "events": "這週附近",
+      "see_events": "看附近 {n} 場活動"
+    },
+    "chat": {
+      "title": "問小幫手",
+      "placeholder": "想問什麼？例如：我最近狀況怎麼樣？",
+      "send": "送出",
+      "thinking": "小幫手正在查資料…",
+      "tool": {
+        "daily_report": "查看今日報告",
+        "risk_score": "檢查最近的數據",
+        "exercise_rx": "產生運動建議",
+        "site_booking": "查詢據點時段",
+        "points_engine": "查詢點數",
+        "merchant_lookup": "找附近商家",
+        "consent_mgmt": "查看授權",
+        "notify": "發送通知"
+      },
+      "card_title": "需要你確認",
+      "done": "已完成",
+      "cancelled": "已取消",
+      "suggestions": [
+        "我最近狀況怎麼樣？",
+        "今天適合什麼運動？",
+        "幫我預約量血壓",
+        "我有多少點數？",
+        "可以兌換什麼？"
+      ],
+      "mock": "示範模式：小幫手目前以規則回覆（未連接語言模型）"
+    },
+    "points": {
+      "title": "我的點數",
+      "balance": "目前點數",
+      "unit": "點",
+      "expiring": "{points} 點將在 {date} 到期",
+      "offers": "附近可以兌換",
+      "redeem": "兌換",
+      "cost": "{cost} 點",
+      "not_enough": "點數不夠",
+      "confirm_title": "確認兌換",
+      "coupons": "我的兌換券",
+      "coupon_hint": "請商家掃描這個 QR 碼完成核銷",
+      "used": "已使用",
+      "ledger": "點數紀錄",
+      "none": "附近還沒有可兌換的優惠",
+      "recommend": "推薦店家（評分 {min} 以上）",
+      "recommend_none": "附近目前沒有符合偏好與評分門檻的店家"
+    },
+    "family": {
+      "title": "守護圈",
+      "intro": "家人只會看到你「今天狀態一句話、風險等級、是否有待辦」，看不到任何數值或就醫紀錄。你可以隨時收回。",
+      "sharing": "我分享給",
+      "add": "加入家人",
+      "code_label": "家人的守護碼",
+      "code_hint": "請家人打開他的 App，在「守護圈 → 我的守護碼」產生後傳給你",
+      "add_submit": "送出",
+      "confirm_title": "確認分享",
+      "unshare": "收回",
+      "my_code": "我的守護碼",
+      "my_code_hint": "想守護家人時，把這組碼傳給對方輸入（30 分鐘內有效）",
+      "generate": "產生守護碼",
+      "copy": "複製",
+      "copied": "已複製",
+      "watching": "我守護的家人",
+      "view": "看今天狀態",
+      "summary_title": "{name}今天",
+      "pending": "待辦：{text}",
+      "no_pending": "沒有待辦",
+      "none": "目前沒有"
+    },
+    "consent": {
+      "title": "授權管理",
+      "intro": "你可以隨時調整或撤回。撤回後，那項資料會在 24 小時內刪除。",
+      "active": "已授權",
+      "inactive": "未授權",
+      "items": "內容：{items}",
+      "who": "誰看得到",
+      "grant": "授權",
+      "revoke": "撤回",
+      "onboarding_title": "歡迎使用健康小幫手",
+      "onboarding_intro": "小幫手要先取得你的同意，才能讀取下面這些資料。每一項都可以不授權，之後也能隨時更改。",
+      "start": "開始使用",
+      "later": "先不要，稍後再說"
+    },
+    "settings": {
+      "title": "更多",
+      "elder": "長者模式（大字、高對比）",
+      "on": "開啟",
+      "off": "關閉",
+      "qr": "我的量測 QR",
+      "qr_hint": "到據點量測時，請工作人員掃描（10 分鐘內有效）",
+      "refresh": "重新產生",
+      "notifications": "通知",
+      "consents": "授權管理",
+      "logout": "登出",
+      "about": "本 App 是健康促進工具，不提供醫療診斷；身體不舒服請就醫。",
+      "profile": "{name}・{age} 歲・{village}",
+      "family": "守護圈（家人）",
+      "prefs": "推薦偏好（活動、店家）"
+    },
+    "notifications": {
+      "title": "通知",
+      "none": "目前沒有通知"
+    },
+    "health": {
+      "title": "健康數據",
+      "back": "返回數據",
+      "period_label": "期間",
+      "period": {
+        "week": "近 7 天",
+        "month": "近 30 天",
+        "quarter": "近 90 天"
+      },
+      "empty": "目前沒有授權任何資料，所以沒有數據可以顯示。",
+      "report": "產生月報（可列印或存成 PDF）",
+      "report_title": "{name} 的健康月報",
+      "report_range": "期間：{start}～{end}　產生日期：{today}",
+      "print": "列印／存成 PDF",
+      "no_data": "這段期間沒有資料",
+      "table": "看每一筆數字",
+      "date": "日期",
+      "metric": {
+        "steps": "步數",
+        "bp": "血壓",
+        "weight": "體重",
+        "glucose": "血糖",
+        "heart_rate": "心率"
+      },
+      "tile": {
+        "avg_steps": "平均每天",
+        "change": "比前一段",
+        "goal_days": "走到 {goal} 步",
+        "days_value": "{n}／{days} 天",
+        "peer": "同齡平均（{band} 歲）",
+        "peer_masked": "同齡人數不足，不比較",
+        "count": "量測次數",
+        "avg": "平均",
+        "high": "偏高次數",
+        "in_range": "在建議範圍內 {n} 次",
+        "latest": "最近一次",
+        "change_abs": "期間變化（公斤）",
+        "hr_avg": "每日平均",
+        "points": "這段期間得到的點數",
+        "events": "參加社區活動"
+      },
+      "unit": {
+        "steps": "步",
+        "times": "次",
+        "kg": "公斤",
+        "bpm": "下／分"
+      },
+      "goal_line": "目標 {goal}",
+      "systolic": "收縮壓",
+      "diastolic": "舒張壓",
+      "ref_sys": "收縮壓 {v}",
+      "ref_dia": "舒張壓 {v}",
+      "bp_note": "參考線是建議範圍的上限（140/90）；連續偏高時建議到據點複測，有疑問請諮詢醫師。",
+      "activity": "活動與點數",
+      "not_authorized": "這些資料還沒授權，所以不會顯示：{items}",
+      "go_consent": "去授權管理"
+    },
+    "events": {
+      "title": "近日活動",
+      "prefs": "推薦偏好",
+      "mine": "我報名的活動",
+      "past": "參加過的活動",
+      "none": "這兩週附近還沒有新的活動。",
+      "status": {
+        "registered": "已報名",
+        "attended": "已出席",
+        "cancelled": "已取消"
+      },
+      "register": "我要報名",
+      "cancel": "取消報名",
+      "points": "參加可得 {points} 點",
+      "attended_points": "已出席 +{points} 點",
+      "distance": "離家約 {km} 公里",
+      "seats": "剩下 {n} 個名額",
+      "why": "為什麼推薦給您",
+      "confirm_title": "確認報名",
+      "registered": "已報名「{title}」。當天請帶手機，到現場出示「我的量測 QR」報到。",
+      "cancelled": "已取消「{title}」的報名。"
+    },
+    "prefs": {
+      "title": "推薦偏好",
+      "intro": "小幫手會依這些偏好，加上您已授權的健康資料，推薦附近的活動與店家。隨時可以修改。",
+      "events": "有興趣的活動",
+      "merchants": "喜歡的店家類別",
+      "dietary": "飲食需求",
+      "rating": "店家評分與距離",
+      "rating_hint": "只推薦評分達到這個門檻的店家",
+      "rating_default": "系統預設門檻",
+      "rating_value": "{v} 分以上",
+      "distance": "最遠距離",
+      "distance_default": "系統預設距離",
+      "distance_value": "{km} 公里內",
+      "event_push": "接收近日活動推播",
+      "event_push_hint": "每週最多 2 則；推播只寫活動名稱與時間，不會寫健康理由。",
+      "save": "儲存",
+      "saved": "已儲存偏好"
+    }
+  },
+  "db": {
+    "error": {
+      "cross_schema": "禁止在同一個查詢中同時存取可識別區（idn）與去識別化區（anon）"
+    }
+  },
+  "output_filter": {
+    "fallback": "這部分建議諮詢醫師，或到社區據點複測。"
+  },
+  "console": {
+    "title": "M1 驗收台",
+    "subtitle": "基礎層：同意管理、確認狀態機、事件匯流、稽核。此頁僅供開發環境使用。",
+    "health": {
+      "database": "資料庫",
+      "event_bus": "事件匯流",
+      "ok": "正常",
+      "down": "異常"
+    },
+    "constraints": {
+      "heading": "八條核心約束（SPEC §2.2）",
+      "last_run": "最近一次測試：{at}",
+      "no_report": "尚無測試報告。執行 .\\make.ps1 test 後重新整理。",
+      "passed": "{n} 項通過",
+      "failed": "{n} 項失敗",
+      "C-1": "idn 與 anon 之間沒有任何 JOIN",
+      "C-2": "機關側 Agent 只有 anon 權限",
+      "C-3": "民眾側工具呼叫必附授權範圍",
+      "C-4": "人數少於 k 的列一律遮蔽",
+      "C-5": "高風險動作須本人確認",
+      "C-6": "工具呼叫與解碼都寫稽核（不可改刪）",
+      "C-7": "A1 輸出不得有疾病斷言",
+      "C-8": "輿情落地前去除身分"
+    },
+    "citizen": {
+      "heading": "民眾端：我的授權",
+      "account": "示範帳號",
+      "password": "密碼",
+      "login": "登入",
+      "logged_in": "目前登入：{name}",
+      "empty": "目前沒有任何授權。",
+      "version": "第 {v} 版",
+      "granted_at": "授權時間",
+      "items": "資料項目",
+      "explain": "誰看得到？",
+      "revoke": "撤回授權",
+      "confirm": "確認撤回",
+      "cancel": "取消",
+      "pending_hint": "這是唯一的確認文案，不附加任何挽留說明。"
+    },
+    "admin": {
+      "heading": "系統管理：即時觀察",
+      "events": "事件匯流（Redis Streams）",
+      "jobs": "撤回後刪除任務",
+      "audit": "稽核日誌（append-only）",
+      "auto_refresh": "每 3 秒自動更新",
+      "none": "目前沒有資料",
+      "cols": {
+        "type": "事件",
+        "source": "來源",
+        "at": "時間",
+        "status": "狀態",
+        "deleted": "已刪除",
+        "window": "申請 → 期限",
+        "actor": "身分",
+        "action": "動作",
+        "decision": "結果"
+      }
+    },
+    "links": {
+      "docs": "API 文件（Swagger）",
+      "redoc": "API 規格（ReDoc）"
+    }
+  },
+  "events": {
+    "category": {
+      "measure": "量測篩檢",
+      "walk": "健走",
+      "exercise": "運動課程",
+      "education": "衛教講座",
+      "nutrition": "飲食共餐",
+      "vaccine": "疫苗接種",
+      "social": "長青聯誼"
+    },
+    "summary": "報名「{title}」{when}（主辦：{organizer}）。報名後主辦單位會看到您的姓名與電話，用來報到與聯絡{points}",
+    "summary_unknown": "報名活動 {event_id}",
+    "push": {
+      "title": "近日活動：{title}",
+      "body": "{when}・{venue}{points}",
+      "points": "，參加可得 {points} 點",
+      "cancelled_title": "活動取消通知",
+      "cancelled_body": "您報名的「{title}」（{when}）已取消，造成不便敬請見諒。"
+    },
+    "count_masked": "少於 {k} 人",
+    "organizer_agency": "北區衛生所",
+    "checked_in": "已報到：{person}{points}",
+    "checked_in_points": "，發放 {points} 點",
+    "error": {
+      "not_found": "找不到這個活動，或活動已取消",
+      "ended": "這個活動已經結束了",
+      "full": "這個活動名額已滿",
+      "not_registered": "您沒有報名這個活動",
+      "checkin_window": "不在報到時間內（活動開始前 1 小時至結束後 2 小時）",
+      "bad_site": "找不到這個據點",
+      "not_pending": "這則活動已經審核過了",
+      "not_active": "這個活動已經不能取消",
+      "list_forbidden": "報名名單只有主辦據點的人員看得到",
+      "window": "結束時間要晚於開始時間"
+    }
+  },
+  "rec": {
+    "signal": {
+      "bp": "最近幾次血壓量測偏高，這場有血壓量測，可以順便複測",
+      "bp_record": "依健康存摺的就醫紀錄，血壓相關的活動可能對您有幫助",
+      "glucose": "最近一次血糖量測偏高，這場有血糖量測或飲食建議",
+      "glucose_record": "依健康存摺的就醫紀錄，飲食與血糖相關的活動可能對您有幫助",
+      "steps_drop": "最近兩週步數比之前少，一起走走是重新開始的好機會",
+      "steps_low": "最近每天的步數還沒到 {goal} 步，這場可以幫您多動一點",
+      "gentle": "強度溫和，適合循序漸進",
+      "indoor": "今天空品或天氣不適合戶外，這場在室內"
+    },
+    "basis": {
+      "bp": "依據：據點血壓 {dates}",
+      "glucose": "依據：據點血糖 {date}",
+      "steps": "依據：手機步數近 14 天平均 {avg} 步",
+      "nhi": "依據：健康存摺就醫紀錄"
+    },
+    "reason": {
+      "interest": "符合您勾選的興趣：{category}",
+      "points": "參加可得 {points} 點",
+      "near": "離家約 {km} 公里",
+      "rating": "評分 {rating}（{count} 則，{source}）",
+      "likes": "您喜歡的類別：{category}",
+      "dietary": "符合您的飲食需求：{items}",
+      "health_low_salt": "有少鹽選擇，適合留意血壓",
+      "health_low_sugar": "有少糖選擇，適合留意血糖",
+      "health_elder_friendly": "對長輩友善（座位、份量、動線）",
+      "offer": "可用點數兌換「{title}」（{cost} 點）"
+    },
+    "rating_source": {
+      "google_places": "Google 評論",
+      "mock": "示範評分"
+    },
+    "tag": {
+      "low_salt": "少鹽",
+      "low_sugar": "少糖",
+      "vegetarian": "素食",
+      "soft_food": "軟質好入口",
+      "healthy_meal": "健康餐",
+      "elder_friendly": "長輩友善"
+    },
+    "excluded": "評分門檻 {min}：已略過 {low} 家評分較低、{unrated} 家尚無評分的店家",
+    "note": {
+      "scope": "推薦只參考您已授權的資料；沒有授權的項目不會被拿來推薦。"
+    }
+  },
+  "health": {
+    "title": {
+      "week": "近 7 天健康統計",
+      "month": "近 30 天健康統計",
+      "quarter": "近 90 天健康統計"
+    },
+    "line": {
+      "steps": "步數：平均每天 {avg} 步，{days} 天中有 {goal_days} 天達到 {goal} 步",
+      "bp": "血壓：量了 {n} 次，平均 {s}/{d}，其中 {high} 次偏高",
+      "weight": "體重：量了 {n} 次，最近一次 {latest} 公斤（{date}）",
+      "glucose": "血糖：量了 {n} 次，最近一次 {latest}（{date}），平均 {avg}",
+      "heart_rate": "心率：每日平均約 {avg} 下／分鐘"
+    },
+    "note": "以上是您自己的量測紀錄統計，只描述數字、不做診斷；有疑問請諮詢醫師或到據點複測。"
+  },
+  "events_ui": {
+    "field": {
+      "title": "活動名稱",
+      "category": "類別",
+      "site": "主辦據點",
+      "no_site": "（不指定據點）",
+      "venue": "地點",
+      "venue_hint": "留空則使用據點名稱",
+      "date": "日期",
+      "from": "開始",
+      "to": "結束",
+      "capacity": "名額",
+      "capacity_hint": "留空表示不限",
+      "points": "參加可得點數",
+      "points_hint": "0 表示不發點；報到後才發點",
+      "tags": "標籤（推薦用）",
+      "tags_hint": "例如有量血壓就勾「血壓」，推薦時會優先給最近血壓偏高的民眾",
+      "description": "說明"
+    },
+    "tag": {
+      "bp": "血壓",
+      "glucose": "血糖",
+      "weight": "體重",
+      "steps": "走路",
+      "indoor": "室內",
+      "outdoor": "戶外",
+      "gentle": "溫和",
+      "free": "免費"
+    }
+  }
+}

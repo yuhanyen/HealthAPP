@@ -1,0 +1,21 @@
+[
+  {"days_ago": 34, "hour": 10, "source_class": "forum", "source_url": "https://forum.example.tw/t/47002", "village_code": "N01", "user": {"name": "mock_a01"}, "text": "光明里健康站週六有開嗎？想帶媽媽去量血壓"},
+  {"days_ago": 30, "hour": 15, "source_class": "google_places", "source_url": "https://maps.google.com/?cid=10004", "village_code": "N04", "author_name": "許○○（模擬）", "rating": 5, "text": "仁愛里長青據點的健康講座很實用，志工也很親切"},
+  {"days_ago": 27, "hour": 9, "source_class": "news", "source_url": "https://news.example.tw/local/history-01", "village_code": null, "reporter": "地方記者", "text": "北區衛生所推出社區健康促進活動，鼓勵長輩每天走路"},
+  {"days_ago": 24, "hour": 18, "source_class": "forum", "source_url": "https://forum.example.tw/t/47120", "village_code": "N02", "screen_name": "mock_b02", "text": "中正里據點量血壓時段只有早上，上班族不方便"},
+  {"days_ago": 20, "hour": 11, "source_class": "google_places", "source_url": "https://maps.google.com/?cid=10006", "village_code": "N06", "author_name": "吳○○（模擬）", "rating": 4, "text": "長春里活動中心環境乾淨，量測很方便"},
+  {"days_ago": 16, "hour": 20, "source_class": "forum", "source_url": "https://forum.example.tw/t/47310", "village_code": "N05", "user": {"name": "mock_c05"}, "text": "仁愛里步道的路燈修好了，晚上散步安心多了，謝謝里長"},
+  {"days_ago": 12, "hour": 8, "source_class": "google_places", "source_url": "https://maps.google.com/?cid=10007", "village_code": "N01", "author_name": "鄭○○（模擬）", "rating": 3, "text": "光明里健康站說下週開始整修，暫停開放一陣子"},
+  {"days_ago": 6, "hour": 9, "source_class": "news", "source_url": "https://news.example.tw/local/site-renovation", "village_code": "N01", "reporter": "地方記者", "text": "北區光明里、中正里兩處社區健康站整修關閉至年底，衛生所呼籲民眾改至衛生所量測"},
+  {"days_ago": 6, "hour": 14, "source_class": "forum", "source_url": "https://forum.example.tw/t/48301", "village_code": "N01", "user": {"name": "mock_d01", "avatar": "https://forum.example.tw/avatar/d01.png"}, "text": "光明里健康站關閉了，量血壓要跑到衛生所太遠了，什麼時候重新開放？"},
+  {"days_ago": 5, "hour": 10, "source_class": "google_places", "source_url": "https://maps.google.com/?cid=10001", "village_code": "N01", "author_name": "蔡○○（模擬）", "author_url": "https://www.google.com/maps/contrib/mock-0011", "rating": 1, "text": "附近據點關閉後全部擠來衛生所，時段很少，很不方便"},
+  {"days_ago": 5, "hour": 19, "source_class": "forum", "source_url": "https://forum.example.tw/t/48322", "village_code": "N02", "screen_name": "mock_e02", "text": "中正里的據點也沒開，爸爸說量血壓要坐公車很不方便 @里長辦公室"},
+  {"days_ago": 4, "hour": 8, "source_class": "news", "source_url": "https://news.example.tw/local/residents-complain", "village_code": "N02", "reporter": "地方記者", "text": "據點關閉，中正里長輩反映量測時段不足、往返太遠"},
+  {"days_ago": 4, "hour": 16, "source_class": "google_places", "source_url": "https://maps.google.com/?cid=10012", "village_code": "N02", "author_name": "江○○（模擬）", "profile_photo_url": "https://lh3.googleusercontent.com/a/mock-0012", "rating": 2, "text": "中正里據點關閉沒公告，白跑一趟，有問題打 0912-345-678 也沒人接"},
+  {"days_ago": 3, "hour": 9, "source_class": "forum", "source_url": "https://forum.example.tw/t/48350", "village_code": "N01", "user": {"name": "mock_f01"}, "text": "光明里據點關閉兩週了，好多長輩都沒在量血壓，時段可以多開嗎"},
+  {"days_ago": 3, "hour": 13, "source_class": "google_places", "source_url": "https://maps.google.com/?cid=10001", "village_code": "N01", "author_name": "羅○○（模擬）", "rating": 2, "text": "衛生所量測時段太少，據點又關閉，很不方便"},
+  {"days_ago": 2, "hour": 10, "source_class": "forum", "source_url": "https://forum.example.tw/t/48377", "village_code": "N02", "screen_name": "mock_g02", "text": "中正里什麼時候重新開放？媽媽一個月沒量血壓了，信箱 mock.family@example.com"},
+  {"days_ago": 2, "hour": 18, "source_class": "news", "source_url": "https://news.example.tw/local/council-question", "village_code": "N01", "reporter": "地方記者", "text": "議員質詢北區健康站關閉影響長輩量測，要求衛生所提出替代時段"},
+  {"days_ago": 1, "hour": 11, "source_class": "google_places", "source_url": "https://maps.google.com/?cid=10012", "village_code": "N02", "author_name": "簡○○（模擬）", "rating": 1, "text": "據點沒開，時段又少，跑去衛生所太遠，希望能有巡迴量測"},
+  {"days_ago": 1, "hour": 15, "source_class": "google_places", "source_url": "https://maps.google.com/?cid=10003", "village_code": "N03", "author_name": "柯○○（模擬）", "rating": 5, "text": "和平里關懷據點志工親切，服務很好"}
+]

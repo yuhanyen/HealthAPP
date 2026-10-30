@@ -1,0 +1,154 @@
+{
+ "resourceType": "Bundle",
+ "type": "collection",
+ "meta": {
+  "profile": [
+   "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Bundle-twcore"
+  ]
+ },
+ "entry": [
+  {
+   "resource": {
+    "resourceType": "Patient",
+    "identifier": [
+     {
+      "system": "http://www.moi.gov.tw",
+      "value": "DEMO000007"
+     }
+    ],
+    "name": [
+     {
+      "text": "（模擬）"
+     }
+    ]
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Encounter",
+    "meta": {
+     "profile": [
+      "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Encounter-twcore"
+     ]
+    },
+    "status": "finished",
+    "class": {
+     "system": "http://terminology.hl7.org/CodeSystem/v3-ActCode",
+     "code": "AMB",
+     "display": "ambulatory"
+    },
+    "serviceType": {
+     "text": "腎臟科"
+    },
+    "serviceProvider": {
+     "display": "示範醫院"
+    },
+    "period": {
+     "start": "2026-10-15T10:00:00+08:00"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Condition",
+    "meta": {
+     "profile": [
+      "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Condition-twcore"
+     ]
+    },
+    "clinicalStatus": {
+     "coding": [
+      {
+       "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+       "code": "active"
+      }
+     ]
+    },
+    "code": {
+     "coding": [
+      {
+       "system": "http://hl7.org/fhir/sid/icd-10-cm",
+       "code": "N18.3",
+       "display": "Chronic kidney disease, stage 3"
+      }
+     ],
+     "text": "Chronic kidney disease, stage 3"
+    },
+    "recordedDate": "2025-01-20"
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "Condition",
+    "meta": {
+     "profile": [
+      "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/Condition-twcore"
+     ]
+    },
+    "clinicalStatus": {
+     "coding": [
+      {
+       "system": "http://terminology.hl7.org/CodeSystem/condition-clinical",
+       "code": "active"
+      }
+     ]
+    },
+    "code": {
+     "coding": [
+      {
+       "system": "http://hl7.org/fhir/sid/icd-10-cm",
+       "code": "I10",
+       "display": "Essential (primary) hypertension"
+      }
+     ],
+     "text": "Essential (primary) hypertension"
+    },
+    "recordedDate": "2022-05-02"
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "MedicationStatement",
+    "meta": {
+     "profile": [
+      "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/MedicationStatement-twcore"
+     ]
+    },
+    "status": "active",
+    "medicationCodeableConcept": {
+     "coding": [
+      {
+       "system": "http://www.whocc.no/atc",
+       "code": "C09CA01",
+       "display": "Losartan 50mg"
+      }
+     ],
+     "text": "Losartan 50mg"
+    },
+    "effectivePeriod": {
+     "start": "2022-05-02"
+    }
+   }
+  },
+  {
+   "resource": {
+    "resourceType": "AllergyIntolerance",
+    "meta": {
+     "profile": [
+      "https://twcore.mohw.gov.tw/ig/twcore/StructureDefinition/AllergyIntolerance-twcore"
+     ]
+    },
+    "code": {
+     "text": "Penicillin",
+     "coding": [
+      {
+       "code": "penicillin",
+       "display": "Penicillin"
+      }
+     ]
+    },
+    "recordedDate": "2019-04-01"
+   }
+  }
+ ]
+}

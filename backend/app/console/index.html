@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>M1 驗收台</title>
+<style>
+  :root {
+    --bg: #f6f7f9; --panel: #ffffff; --ink: #1c2430; --muted: #5d6878; --line: #e2e6ec;
+    --accent: #1f6feb; --ok: #1a7f37; --ok-bg: #e6f4ea; --bad: #c62828; --bad-bg: #fdecea;
+    --warn: #9a6700; --warn-bg: #fff4d6; --chip: #eef1f5; --shadow: 0 1px 2px rgba(16,24,40,.06);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f1419; --panel: #171d24; --ink: #e6ebf1; --muted: #9aa6b4; --line: #2a333d;
+      --accent: #58a6ff; --ok: #3fb950; --ok-bg: #12261a; --bad: #f47067; --bad-bg: #2d1515;
+      --warn: #d4a72c; --warn-bg: #2b2210; --chip: #222a33; --shadow: none;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink);
+         font: 16px/1.55 "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif; }
+  header { padding: 20px 16px 8px; max-width: 1180px; margin: 0 auto; display: flex;
+           flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px; }
+  h1 { margin: 0; font-size: 24px; }
+  h2 { margin: 0 0 12px; font-size: 18px; }
+  .sub { color: var(--muted); margin: 4px 0 0; font-size: 14px; }
+  main { max-width: 1180px; margin: 0 auto; padding: 8px 16px 40px; display: grid; gap: 16px; }
+  section { background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
+            padding: 16px; box-shadow: var(--shadow); min-width: 0; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+  .badges { display: flex; gap: 8px; flex-wrap: wrap; }
+  .badge { font-size: 13px; padding: 3px 10px; border-radius: 999px; background: var(--chip); }
+  .badge.ok { background: var(--ok-bg); color: var(--ok); }
+  .badge.bad { background: var(--bad-bg); color: var(--bad); }
+  .grid8 { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 10px; }
+  .cons { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; }
+  .cons b { display: inline-block; min-width: 38px; }
+  .cons .st { font-size: 13px; margin-top: 4px; }
+  .cons.pass { border-left: 4px solid var(--ok); }
+  .cons.fail { border-left: 4px solid var(--bad); }
+  .muted { color: var(--muted); font-size: 14px; }
+  .two { display: grid; grid-template-columns: 1fr; gap: 16px; }
+  @media (min-width: 980px) { .two { grid-template-columns: 5fr 7fr; } }
+  select, input, button { font: inherit; }
+  select, input { padding: 6px 10px; border: 1px solid var(--line); border-radius: 8px;
+                  background: var(--panel); color: var(--ink); max-width: 100%; }
+  button { padding: 6px 14px; border-radius: 8px; border: 1px solid var(--line);
+           background: var(--panel); color: var(--ink); cursor: pointer; }
+  button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  button.danger { color: var(--bad); border-color: var(--bad); }
+  button:disabled { opacity: .5; cursor: default; }
+  .card { border: 1px solid var(--line); border-radius: 10px; padding: 12px; margin-top: 10px; }
+  .card h3 { margin: 0 0 4px; font-size: 16px; }
+  .chips { display: flex; flex-wrap: wrap; gap: 4px; margin: 6px 0; }
+  .chip { font-size: 12px; background: var(--chip); border-radius: 6px; padding: 1px 7px; }
+  .explain { margin: 8px 0 0; padding-left: 18px; font-size: 14px; color: var(--muted); }
+  .confirm { margin-top: 10px; padding: 10px 12px; border-radius: 8px; background: var(--warn-bg); }
+  .confirm p { margin: 0 0 8px; }
+  .toast { margin-top: 10px; padding: 8px 12px; border-radius: 8px; background: var(--ok-bg); color: var(--ok); }
+  .toast.err { background: var(--bad-bg); color: var(--bad); }
+  .panes { display: grid; gap: 12px; }
+  .pane h3 { margin: 0 0 6px; font-size: 15px; }
+  .scroll { max-height: 260px; overflow: auto; border: 1px solid var(--line); border-radius: 8px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th, td { text-align: left; padding: 6px 8px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { position: sticky; top: 0; background: var(--panel); color: var(--muted); font-weight: 600; }
+  td code { font-size: 12px; }
+  .pill { font-size: 12px; border-radius: 999px; padding: 1px 8px; background: var(--chip); white-space: nowrap; }
+  .pill.done, .pill.executed { background: var(--ok-bg); color: var(--ok); }
+  .pill.pending, .pill.pending_confirmation { background: var(--warn-bg); color: var(--warn); }
+  .pill.rejected, .pill.failed, .pill.error { background: var(--bad-bg); color: var(--bad); }
+  a { color: var(--accent); }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1 data-i18n="console.title"></h1>
+    <p class="sub" data-i18n="console.subtitle"></p>
+  </div>
+  <div class="badges" id="health"></div>
+</header>
+
+<main>
+  <section>
+    <div class="row" style="justify-content: space-between">
+      <h2 data-i18n="console.constraints.heading"></h2>
+      <span class="muted" id="report-at"></span>
+    </div>
+    <div class="grid8" id="constraints"></div>
+  </section>
+
+  <div class="two">
+    <section>
+      <h2 data-i18n="console.citizen.heading"></h2>
+      <div class="row">
+        <label><span data-i18n="console.citizen.account"></span>
+          <select id="account"></select></label>
+        <label><span data-i18n="console.citizen.password"></span>
+          <input id="password" type="password" value="Demo2026!" size="10"></label>
+        <button class="primary" id="login" data-i18n="console.citizen.login"></button>
+      </div>
+      <p class="muted" id="who"></p>
+      <div id="consents"></div>
+      <div id="citizen-msg"></div>
+    </section>
+
+    <section>
+      <div class="row" style="justify-content: space-between">
+        <h2 data-i18n="console.admin.heading"></h2>
+        <span class="muted" data-i18n="console.admin.auto_refresh"></span>
+      </div>
+      <div class="panes">
+        <div class="pane"><h3 data-i18n="console.admin.events"></h3><div class="scroll" id="events"></div></div>
+        <div class="pane"><h3 data-i18n="console.admin.jobs"></h3><div class="scroll" id="jobs"></div></div>
+        <div class="pane"><h3 data-i18n="console.admin.audit"></h3><div class="scroll" id="audit"></div></div>
+      </div>
+      <p class="muted"><a href="/docs" data-i18n="console.links.docs"></a> ·
+        <a href="/redoc" data-i18n="console.links.redoc"></a></p>
+    </section>
+  </div>
+</main>
+
+<script>
+const API = "/api/v1";
+const ACCOUNTS = ["wang.xiuying", "wang.yijun", ...Array.from({ length: 8 }, (_, i) => `citizen${String(i + 3).padStart(2, "0")}`)];
+let I18N = {};
+let citizenToken = null;
+let adminToken = null;
+
+const $ = (id) => document.getElementById(id);
+const esc = (v) => String(v ?? "").replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+function T(key, params = {}) {
+  let v = key.split(".").reduce((o, k) => (o == null ? undefined : o[k]), I18N);
+  if (typeof v !== "string") return key;
+  for (const [k, val] of Object.entries(params)) v = v.replaceAll(`{${k}}`, val);
+  return v;
+}
+const fmt = (iso) => iso ? new Date(iso).toLocaleString("zh-TW", { timeZone: "Asia/Taipei", hour12: false }) : "—";
+
+async function call(path, { token, method = "GET", form } = {}) {
+  const headers = {};
+  if (token) headers.Authorization = `Bearer ${token}`;
+  let body;
+  if (form) { body = new URLSearchParams(form); headers["Content-Type"] = "application/x-www-form-urlencoded"; }
+  const res = await fetch(API + path, { method, headers, body });
+  const data = await res.json().catch(() => ({}));
+  return { status: res.status, data };
+}
+async function login(username, password) {
+  const r = await call("/auth/token", { method: "POST", form: { username, password } });
+  if (r.status !== 200) throw new Error(r.data.detail || r.status);
+  return r.data;
+}
+
+async function loadHealth() {
+  const { data } = await call("/health");
+  const badge = (label, ok) => `<span class="badge ${ok ? "ok" : "bad"}">${esc(label)}：${esc(ok ? T("console.health.ok") : T("console.health.down"))}</span>`;
+  $("health").innerHTML = badge(T("console.health.database"), data.database?.ok) +
+    badge(`${T("console.health.event_bus")}（${data.event_bus?.backend ?? "?"}）`, data.event_bus?.ok);
+}
+
+async function loadConstraints() {
+  const { data } = await call("/admin/constraints", { token: adminToken });
+  const rep = data.constraints || {};
+  $("report-at").textContent = data.generated_at ? T("console.constraints.last_run", { at: fmt(data.generated_at) }) : T("console.constraints.no_report");
+  $("constraints").innerHTML = [1, 2, 3, 4, 5, 6, 7, 8].map((i) => {
+    const key = `C-${i}`, r = rep[key];
+    const state = !r ? "" : r.failed ? "fail" : "pass";
+    const status = !r ? "—" : r.failed ? `✗ ${T("console.constraints.failed", { n: r.failed })}` : `✓ ${T("console.constraints.passed", { n: r.passed })}`;
+    return `<div class="cons ${state}"><b>${key}</b> ${esc(T(`console.constraints.${key}`))}<div class="st">${esc(status)}</div></div>`;
+  }).join("");
+}
+
+function sourceName(src) { return T(`consent.source.${src}.name`); }
+
+async function loadConsents() {
+  const { data } = await call("/consents", { token: citizenToken });
+  if (!Array.isArray(data) || data.length === 0) { $("consents").innerHTML = `<p class="muted">${esc(T("console.citizen.empty"))}</p>`; return; }
+  $("consents").innerHTML = data.map((c) => `
+    <div class="card" id="c-${c.id}">
+      <h3>${esc(sourceName(c.source))}</h3>
+      <div class="muted">${esc(T("console.citizen.version", { v: c.version }))} · ${esc(T("console.citizen.granted_at"))} ${esc(fmt(c.granted_at))}</div>
+      <div class="chips">${c.scope.read.map((x) => `<span class="chip">${esc(T(`consent.items.${x}`))}</span>`).join("")}</div>
+      <div class="row">
+        <button data-explain="${esc(c.source)}" data-id="${esc(c.id)}">${esc(T("console.citizen.explain"))}</button>
+        <button class="danger" data-revoke="${esc(c.id)}">${esc(T("console.citizen.revoke"))}</button>
+      </div>
+      <div class="slot"></div>
+    </div>`).join("");
+}
+
+function slot(id) { return $(`c-${id}`).querySelector(".slot"); }
+function message(text, err = false) { $("citizen-msg").innerHTML = `<div class="toast ${err ? "err" : ""}">${esc(text)}</div>`; }
+
+async function explain(source, id) {
+  const { data } = await call(`/consents/explain/${source}`, { token: citizenToken });
+  slot(id).innerHTML = `<ul class="explain">${data.who_sees.map((w) => `<li>${esc(w)}</li>`).join("")}</ul>`;
+}
+
+async function requestRevoke(id) {
+  const { status, data } = await call(`/consents/${id}`, { token: citizenToken, method: "DELETE" });
+  if (status !== 202) { message(data.detail || status, true); return; }
+  slot(id).innerHTML = `<div class="confirm"><p>${esc(data.message)}</p>
+    <div class="row"><button class="danger" data-confirm="${esc(data.action_id)}">${esc(T("console.citizen.confirm"))}</button>
+    <button data-cancel="${esc(data.action_id)}" data-id="${esc(id)}">${esc(T("console.citizen.cancel"))}</button></div>
+    <p class="muted" style="margin:8px 0 0">${esc(T("console.citizen.pending_hint"))}</p></div>`;
+  refreshAdmin();
+}
+
+async function decide(actionId, verb, consentId) {
+  const { status, data } = await call(`/me/actions/${actionId}/${verb}`, { token: citizenToken, method: "POST" });
+  if (status !== 200) { message(data.detail || status, true); return; }
+  if (verb === "confirm") message(data.result?.message || data.status);
+  else if (consentId) slot(consentId).innerHTML = "";
+  await loadConsents();
+  setTimeout(refreshAdmin, 400);
+}
+
+function table(rows, cols) {
+  if (!rows.length) return `<p class="muted" style="padding:8px">${esc(T("console.admin.none"))}</p>`;
+  return `<table><thead><tr>${cols.map((c) => `<th>${esc(c[0])}</th>`).join("")}</tr></thead><tbody>${
+    rows.map((r) => `<tr>${cols.map((c) => `<td>${c[1](r)}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
+}
+const pill = (v) => `<span class="pill ${esc(v)}">${esc(v)}</span>`;
+
+async function refreshAdmin() {
+  if (!adminToken) return;
+  const [ev, jobs, audit] = await Promise.all([
+    call("/admin/events/recent?count=20", { token: adminToken }),
+    call("/admin/deletion-jobs?limit=20", { token: adminToken }),
+    call("/admin/audit?limit=40", { token: adminToken }),
+  ]);
+  const col = (k) => T(`console.admin.cols.${k}`);
+  $("events").innerHTML = table(ev.data || [], [
+    [col("type"), (r) => `<code>${esc(r.event.type)}</code>`],
+    [col("source"), (r) => esc(r.event.source ? sourceName(r.event.source) : r.event.date ?? "")],
+    [col("at"), (r) => esc(fmt(r.event.at))],
+  ]);
+  $("jobs").innerHTML = table(jobs.data || [], [
+    [col("source"), (r) => esc(sourceName(r.source))],
+    [col("status"), (r) => pill(r.status)],
+    [col("deleted"), (r) => esc(r.deleted_counts ? Object.entries(r.deleted_counts).map(([k, v]) => `${k} ${v}`).join("、") : "")],
+    [col("window"), (r) => `${esc(fmt(r.requested_at))}<br><span class="muted">${esc(fmt(r.due_at))}</span>`],
+  ]);
+  $("audit").innerHTML = table(audit.data || [], [
+    [col("at"), (r) => esc(fmt(r.at))],
+    [col("actor"), (r) => esc(r.actor_type)],
+    [col("action"), (r) => `<code>${esc(r.action)}</code>${r.tool ? `<br><span class="muted">${esc(r.tool)}</span>` : ""}`],
+    [col("decision"), (r) => pill(r.decision)],
+  ]);
+}
+
+async function citizenLogin() {
+  try {
+    const tok = await login($("account").value, $("password").value);
+    citizenToken = tok.access_token;
+    $("who").textContent = T("console.citizen.logged_in", { name: tok.display_name });
+    $("citizen-msg").innerHTML = "";
+    await loadConsents();
+    refreshAdmin();
+  } catch (e) { message(e.message, true); }
+}
+
+document.addEventListener("click", (e) => {
+  const b = e.target.closest("button");
+  if (!b) return;
+  if (b.dataset.explain) explain(b.dataset.explain, b.dataset.id);
+  else if (b.dataset.revoke) requestRevoke(b.dataset.revoke);
+  else if (b.dataset.confirm) decide(b.dataset.confirm, "confirm");
+  else if (b.dataset.cancel) decide(b.dataset.cancel, "cancel", b.dataset.id);
+});
+
+(async function init() {
+  I18N = (await call("/i18n")).data;
+  document.querySelectorAll("[data-i18n]").forEach((el) => { el.textContent = T(el.dataset.i18n); });
+  document.title = `${T("app.name")} · ${T("console.title")}`;
+  $("account").innerHTML = ACCOUNTS.map((a) => `<option>${esc(a)}</option>`).join("");
+  $("login").addEventListener("click", citizenLogin);
+  await loadHealth();
+  try { adminToken = (await login("admin", "Demo2026!")).access_token; } catch (e) { /* 未 seed 時略過 */ }
+  await Promise.all([loadConstraints(), refreshAdmin(), citizenLogin()]);
+  setInterval(refreshAdmin, 3000);
+  setInterval(loadHealth, 15000);
+})();
+</script>
+</body>
+</html>

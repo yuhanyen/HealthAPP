@@ -1,0 +1,31 @@
+{
+  "_說明": "WearableAdapter Mock 的產生規則。personas／cheats 以虛構身分證字號為鍵（只在 Mock 內雜湊比對，DB 只存雜湊）。days_ago 以台北時間的今天為 0。",
+  "hourly_weights": [0, 0, 0, 0, 0, 0.02, 0.05, 0.09, 0.07, 0.06, 0.06, 0.07, 0.06, 0.05, 0.05, 0.06, 0.07, 0.08, 0.07, 0.06, 0.04, 0.02, 0.01, 0.01],
+  "default_daily_steps": {"min": 3500, "max": 9500, "sd_ratio": 0.25},
+  "resting_hr": {"min": 62, "max": 80},
+  "personas": {
+    "DEMO000001": {
+      "label": "王秀英：近兩週步數比前兩週少約四成",
+      "segments": [
+        {"from_days_ago": 9999, "to_days_ago": 15, "mean": 5300},
+        {"from_days_ago": 14, "to_days_ago": 0, "mean": 3100}
+      ],
+      "resting_hr": 76
+    },
+    "DEMO000002": {
+      "label": "王怡君：通勤上班族",
+      "segments": [{"from_days_ago": 9999, "to_days_ago": 0, "mean": 7400}],
+      "resting_hr": 68
+    }
+  },
+  "cheats": {
+    "DEMO000010": {
+      "label": "防作弊樣本：昨天下午兩小時各超過 3,000 步、前天單日超過 40,000 步",
+      "spikes": [
+        {"days_ago": 1, "hour": 14, "steps": 4800},
+        {"days_ago": 1, "hour": 15, "steps": 5200}
+      ],
+      "daily_override": [{"days_ago": 2, "steps": 46000}]
+    }
+  }
+}

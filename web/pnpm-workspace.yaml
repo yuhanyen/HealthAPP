@@ -1,0 +1,7 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+
+# pnpm 10 預設不執行相依套件的安裝腳本；esbuild（Vite 用）需要
+onlyBuiltDependencies:
+  - esbuild

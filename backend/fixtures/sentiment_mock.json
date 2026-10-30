@@ -1,0 +1,57 @@
+[
+  {
+    "source_class": "google_places",
+    "source_url": "https://maps.google.com/?cid=10001",
+    "village_code": "N01",
+    "collected_at": "2026-10-27T09:12:00+08:00",
+    "author_name": "陳○○（模擬）",
+    "author_url": "https://www.google.com/maps/contrib/mock-0001",
+    "profile_photo_url": "https://lh3.googleusercontent.com/a/mock-0001",
+    "rating": 2,
+    "text": "光明里衛生所量血壓要排很久，早上九點就一堆人，@林○○ 你上次也等了快一小時吧"
+  },
+  {
+    "source_class": "google_places",
+    "source_url": "https://maps.google.com/?cid=10002",
+    "village_code": "N03",
+    "collected_at": "2026-10-27T15:40:00+08:00",
+    "author_name": "黃○○（模擬）",
+    "author_url": "https://www.google.com/maps/contrib/mock-0002",
+    "rating": 5,
+    "text": "和平里活動中心的志工很親切，量完血壓還會提醒多走路，推薦長輩來"
+  },
+  {
+    "source_class": "forum",
+    "source_url": "https://forum.example.tw/t/48211",
+    "village_code": "N02",
+    "collected_at": "2026-10-28T08:05:00+08:00",
+    "user": {"name": "mock_user_88", "avatar": "https://forum.example.tw/avatar/88.png"},
+    "text": "中正里的據點最近週三都沒開？有人知道嗎，打 0912-000-111 都沒人接"
+  },
+  {
+    "source_class": "news",
+    "source_url": "https://news.example.tw/local/20261028-health",
+    "village_code": null,
+    "collected_at": "2026-10-28T11:00:00+08:00",
+    "reporter": "地方記者",
+    "text": "北區今年度社區健康據點使用量較去年成長，衛生所表示將增加血壓量測時段"
+  },
+  {
+    "source_class": "google_places",
+    "source_url": "https://maps.google.com/?cid=10001",
+    "village_code": "N01",
+    "collected_at": "2026-10-28T19:22:00+08:00",
+    "author_name": "李○○（模擬）",
+    "author_url": "https://www.google.com/maps/contrib/mock-0003",
+    "rating": 1,
+    "text": "排隊排到放棄，建議改成預約制。有問題請寫信 mock.resident@example.com"
+  },
+  {
+    "source_class": "forum",
+    "source_url": "https://forum.example.tw/t/48230",
+    "village_code": "N05",
+    "collected_at": "2026-10-29T07:48:00+08:00",
+    "screen_name": "neighbor_mock",
+    "text": "仁愛里附近的運動步道路燈壞了，晚上走路很危險 @里長辦公室 可以處理嗎"
+  }
+]

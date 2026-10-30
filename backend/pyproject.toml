@@ -1,0 +1,70 @@
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "healthapp-backend"
+version = "0.1.0"
+description = "健康大數據 App 一期 PoC 後端"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.30",
+    "sqlalchemy>=2.0",
+    "alembic>=1.13",
+    "psycopg[binary]>=3.2",
+    "redis>=5.0",
+    "fakeredis>=2.26",
+    "pydantic>=2.7",
+    "pydantic-settings>=2.3",
+    "python-multipart>=0.0.9",
+    "bcrypt>=4.1",
+    "pyjwt>=2.8",
+    "cryptography>=42",
+    "apscheduler>=3.10,<4",
+    "tzdata",
+    "httpx>=0.27",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.6", "mypy>=1.11", "types-PyYAML", "pyyaml", "pgserver>=0.1.4"]
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-ra"
+filterwarnings = [
+    # 第三方：starlette TestClient 建議改用 httpx2，不影響測試
+    "ignore:Using `httpx` with `starlette.testclient` is deprecated",
+]
+markers = [
+    "constraint: SPEC §2.2 核心約束測試（C-1…C-8）",
+]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B", "SIM", "RUF"]
+# RUF001-003：繁中全形標點是刻意的
+# UP046：ToolSpec 與 registry.tool() 共用同一個 TypeVar，維持 Generic 寫法
+ignore = ["RUF001", "RUF002", "RUF003", "UP046"]
+
+[tool.ruff.lint.per-file-ignores]
+# SQLAlchemy 慣用法：__table_args__ / type_annotation_map 是類別層級 dict
+"app/db/*.py" = ["RUF012"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+plugins = ["pydantic.mypy"]
+mypy_path = "."
+explicit_package_bases = true
+
+[[tool.mypy.overrides]]
+module = ["apscheduler.*", "pgserver.*", "tzdata.*"]
+ignore_missing_imports = true

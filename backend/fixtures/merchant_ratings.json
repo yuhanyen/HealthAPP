@@ -1,0 +1,19 @@
+{
+  "M01": {"rating": 4.3, "count": 212},
+  "M02": {"rating": 4.6, "count": 88},
+  "M03": {"rating": 4.1, "count": 45},
+  "M04": {"rating": 4.7, "count": 130},
+  "M05": {"rating": 3.6, "count": 310},
+  "M06": {"rating": 4.4, "count": 52},
+  "M07": {"rating": 4.2, "count": 40},
+  "M08": {"rating": 3.8, "count": 150},
+  "M09": {"rating": 4.0, "count": 33},
+  "M10": {"rating": 4.5, "count": 95},
+  "M11": {"rating": 4.4, "count": 178},
+  "M12": {"rating": 4.8, "count": 61},
+  "M13": {"rating": 4.5, "count": 264},
+  "M14": {"rating": 4.2, "count": 140},
+  "M15": {"rating": 4.6, "count": 520},
+  "M16": {"rating": 3.4, "count": 205},
+  "M17": {"rating": 4.7, "count": 98}
+}

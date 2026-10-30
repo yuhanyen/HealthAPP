@@ -1,0 +1,34 @@
+[
+  {
+    "source_class": "event_notice",
+    "source_url": "https://north.district.example.tw/news/2026-1101",
+    "days_ahead": 3,
+    "author": {"display_name": "北區區公所 王小姐"},
+    "text": "【北區區公所】秋季社區健走與量血壓\n日期：{date}（{weekday}）上午8:30至10:30\n地點：光明里河濱步道\n內容：專人帶領 3 公里健走，結束後免費量血壓，長輩可選短程路線。\n完成可獲 30 點健康點數，名額 40 名。\n洽詢：0912-345-678 王小姐、north.event@example.tw"
+  },
+  {
+    "source_class": "event_notice",
+    "source_url": "https://www.facebook.com/hepingli.office/posts/9001",
+    "days_ahead": 5,
+    "poster": {"name": "和平里長 陳大明", "avatar": "https://img.example/u/123.jpg"},
+    "text": "【和平里辦公處】控糖飲食與血糖量測講座\n{date}（{weekday}）下午2:00-4:00，地點：和平里社區關懷據點\n營養師分享少糖少鹽的家常菜，現場免費量血糖。限 30 人，參加送 20 點。\n報名請洽 03-5123456 或 @和平里長陳大明"
+  },
+  {
+    "source_class": "event_notice",
+    "source_url": "https://north.district.example.tw/news/2026-1102",
+    "days_ahead": 8,
+    "text": "【北區衛生所】長者流感疫苗接種站\n日期：{date}（{weekday}）上午9:00至12:00\n地點：北區衛生所\n65 歲以上長者請攜帶健保卡，現場免費接種。"
+  },
+  {
+    "source_class": "event_notice",
+    "source_url": "https://forum.example.tw/t/88123",
+    "days_ahead": 4,
+    "text": "有人知道活動中心這週末有什麼活動嗎？上次的手作課很好玩"
+  },
+  {
+    "source_class": "event_notice",
+    "source_url": "https://unknown-blog.example.com/post/1",
+    "days_ahead": 6,
+    "text": "【私人部落格】{date}（{weekday}）上午10:00 免費養生講座（未經審核來源）"
+  }
+]

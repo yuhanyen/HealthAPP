@@ -1,0 +1,14 @@
+{
+  "_說明": "示範資料的情境設定（全部虛構）。近 trend_weeks 週，trend_villages 的據點量測次數下降、高血壓族群血壓上升——對應 SPEC §15 情境 4「北區高血壓未控制率為什麼上升」與輿情 fixture 中光明里排隊、中正里據點未開的抱怨。",
+  "trend_villages": ["N01", "N02"],
+  "trend_weeks": 4,
+  "site_visit_factor": 0.5,
+  "bp_shift": 12,
+  "age_distribution": [
+    [20, 29, 0.12], [30, 39, 0.15], [40, 49, 0.17], [50, 59, 0.18],
+    [60, 69, 0.18], [70, 79, 0.13], [80, 92, 0.07]
+  ],
+  "hypertension_prevalence": {"40": 0.10, "50": 0.22, "60": 0.38, "70": 0.50},
+  "diabetes_prevalence_50_plus": 0.12,
+  "consent_odds": {"wearable": 0.85, "site": 0.6, "nhi": 0.5, "env": 0.75, "merchant": 0.55}
+}

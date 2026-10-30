@@ -1,0 +1,24 @@
+# 機密與本機設定
+.env
+.claude/settings.local.json
+*.pem
+*.key
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+backend/reports/
+backend/var/
+
+# Node（M4 起）
+node_modules/
+dist/
+
+# 編輯器
+.vscode/
+.idea/
